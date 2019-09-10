@@ -16,14 +16,24 @@ import SignUpScreen from '../screens/AuthPage/SignUp'
 
 //HomePage screen
 import HomeScreen from '../screens/HomePage/Home'
+import ChatScreen from '../screens/HomePage/ChatScreen'
+
+const HomePage = createStackNavigator(
+    {
+        Home: { screen: HomeScreen },
+        Chat: { screen: ChatScreen },
+    },{
+        headerMode: "none",
+    }
+)
 
 const HomeTabNavigator = createBottomTabNavigator(
     { 
         Home: {
-            screen: HomeScreen,
+            screen: HomePage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (  
-                <Icon type="AntDesign" name="home" style={{fontSize:30, color:`${tintColor}`}}/>
+                <Icon type="AntDesign" name="home" style={{fontSize:30, color:`${tintColor}`}} />
                 ),
                 title: 'Chats'
             },

@@ -6,7 +6,6 @@ import { Button, Toast } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
 
-// import firebaseConfig from '../../config/firebase'
 import User from '../../assets/User'
 
 class LoginScreen extends Component{
@@ -40,7 +39,7 @@ class LoginScreen extends Component{
             //save user data
             await AsyncStorage.setItem('userPhone', this.state.phone)
             User.phone = this.state.phone
-            firebase.database().ref('/users' + User.phone).set({name: this.state.name})
+            firebase.database().ref('users/' + User.phone).set({name: this.state.name})
             this.props.navigation.navigate('Tabs');
         }
     }
