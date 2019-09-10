@@ -4,8 +4,10 @@ import React, { Component } from 'react'
 import { View, Text,TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native'
 import { Button, Toast } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
+import firebase from 'firebase'
 
-import User from '../../User'
+// import firebaseConfig from '../../config/firebase'
+import User from '../../assets/User'
 
 class LoginScreen extends Component{
     constructor(props) {
@@ -38,7 +40,8 @@ class LoginScreen extends Component{
             //save user data
             await AsyncStorage.setItem('userPhone', this.state.phone)
             User.phone = this.state.phone
-            this.props.navigation.navigate('');
+            firebase.database().ref('/users' + User.phone).set({name: this.state.name})
+            this.props.navigation.navigate('Tabs');
         }
     }
 
