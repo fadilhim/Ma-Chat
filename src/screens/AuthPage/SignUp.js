@@ -42,7 +42,7 @@ class SignUpScreen extends Component{
                         AsyncStorage.setItem('image', result.user.image)
                     })
             })
-            this.props.navigation.navigate('Tabs')
+            // this.props.navigation.navigate('Tabs')
         }
     }
 

@@ -36,9 +36,7 @@ class LoginScreen extends Component{
                     AsyncStorage.setItem('uid', result.user.uid)
                     AsyncStorage.setItem('name', result.user.displayName)
                     AsyncStorage.setItem('image', result.user.image)
-                    AsyncStorage.getItem('uid', (error, result) => {
-                        this.props.navigation.navigate('Tabs')
-                    })
+                    this.props.navigation.navigate('Tabs')
                 })
                 .catch(error => this.setState({ errorMessage: error.message }))
         }

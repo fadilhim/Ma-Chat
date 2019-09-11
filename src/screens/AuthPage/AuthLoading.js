@@ -2,21 +2,20 @@
 import React from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native'
 import firebase from 'firebase'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import firebaseConfig from '../../config/firebase'
 import User from '../../assets/User'
 
 export default class AuthLoadingScreen extends React.Component {
 
-    componentDidMount() {
-        this._bootstrapAsync()
+    componentDidMount = async () => {
+        await AsyncStorage.getItem('uid').then(
+            (result) => this.props.navigation.navigate(result ? 'Tabs' : 'Login')
+        )
+        // firebase.auth().onAuthStateChanged(user => {
+        // })
     }
-
-    _bootstrapAsync = () => {
-        firebase.auth().onAuthStateChanged(user => {
-            this.props.navigation.navigate(user ? 'Tabs' : 'Login')
-        })
-    };
 
     render() {
         return (
