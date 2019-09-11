@@ -1,11 +1,8 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { SafeAreaView, Text, TextInput, TouchableOpacity, FlatList, View } from 'react-native'
 import firebase from 'firebase'
 import { GiftedChat } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
-
-import User from '../../assets/User';
 
 class ChatScreen extends Component {
 
@@ -42,7 +39,6 @@ class ChatScreen extends Component {
 
     handleSubmit = () => {
         const uidSender = this.state.uid
-        const itemReceiver = this.state.idReceiver
 
         let messageId = firebase.database().ref('messages').child(uidSender).child(this.state.idReceiver.uid).push().key
         let updates = {}

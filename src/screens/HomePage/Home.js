@@ -4,8 +4,6 @@ import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image } from 'rea
 import firebase from 'firebase'
 import AsyncStorage from '@react-native-community/async-storage'
 
-import User from '../../assets/User'
-
 class HomeScreen extends Component {
 
     state = {
@@ -31,10 +29,11 @@ class HomeScreen extends Component {
         })
     }
 
-    _logOut = () => {
-        firebase.auth().signOut()
+    _logOut = async () => {
+        await AsyncStorage.clear()
             .then(() => {
-                AsyncStorage.clear().then(() => this.props.navigation.navigate('Login'))
+                firebase.auth().signOut()
+                this.props.navigation.navigate('Login')
             })
             .catch(function(error) {
                 console.error(error)

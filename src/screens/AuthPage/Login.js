@@ -6,8 +6,6 @@ import { Button, Toast } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
 
-import User from '../../assets/User'
-
 class LoginScreen extends Component{
     constructor(props) {
         super(props)

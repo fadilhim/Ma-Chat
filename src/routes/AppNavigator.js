@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
+import React from 'react' 
+import { Icon } from 'native-base'
+
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { createStackNavigator } from 'react-navigation-stack'
-
-import React from 'react' 
-import { Icon } from 'native-base'
 
 //Splash Screen for loading and authentication
 import AuthLoadingScreen from '../screens/AuthPage/AuthLoading'
@@ -14,37 +14,58 @@ import SplashScreen from '../screens/AuthPage/Splash'
 import LoginScreen from '../screens/AuthPage/Login'
 import SignUpScreen from '../screens/AuthPage/SignUp'
 
-//HomePage screen
 import HomeScreen from '../screens/HomePage/Home'
+//HomePage screen
 import ChatScreen from '../screens/HomePage/ChatScreen'
-
-const HomePage = createStackNavigator(
-    {
-        Home: { screen: HomeScreen },
-        Chat: { screen: ChatScreen },
-    },{
-        headerMode: "none",
-    }
-)
+import ProfileScreen from '../screens/HomePage/Profile'
+import LocationScreen from '../screens/HomePage/Location'
 
 const HomeTabNavigator = createBottomTabNavigator(
     { 
         Home: {
-            screen: HomePage,
+            screen: HomeScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (  
-                <Icon type="AntDesign" name="home" style={{fontSize:30, color:`${tintColor}`}} />
+                <Icon type="EvilIcons" name="comment" style={{fontSize:35 , color:`${tintColor}`}} />
                 ),
                 title: 'Chats'
+            },
+        },
+        Location: {
+            screen: LocationScreen,
+            navigationOptions: {
+                tabBarIcon: ({ tintColor }) => (
+                <Icon type="EvilIcons" name="location" style={{fontSize:35, color:`${tintColor}`}}/>
+                ),
+                title: 'Location'
+            },
+        },
+        Profile: {
+            screen: ProfileScreen,
+            navigationOptions: {
+                tabBarIcon: ({ tintColor }) => (
+                <Icon type="EvilIcons" name="user" style={{fontSize:35, color:`${tintColor}`}}/>
+                ),
+                title: 'Profile'
             },
         },
     },{
         tabBarOptions: { 
             showIcon: true,
-            activeTintColor: '#4B4C72',
-            inactiveTintColor: 'gray',
-            showLabel: false
+            activeTintColor: 'white',
+            inactiveTintColor: '#999999',
+            activeBackgroundColor: '#207561',
+            inactiveBackgroundColor: '#207561'
         },
+    }
+)
+
+const HomePage = createStackNavigator(
+    {
+        Home: { screen: HomeTabNavigator },
+        Chat: { screen: ChatScreen },
+    },{
+        headerMode: "none",
     }
 )
 
@@ -53,7 +74,7 @@ const AppNavigation = createSwitchNavigator(
         AuthLoading: { screen: AuthLoadingScreen },
         Login: { screen: LoginScreen },
         SignUp: { screen: SignUpScreen },
-        Tabs: { screen: HomeTabNavigator }
+        Tabs: { screen: HomePage }
     }
 )
 
@@ -65,20 +86,3 @@ const InitialNavigation = createSwitchNavigator(
 )
 
 export default createAppContainer( InitialNavigation )
-
-    // History: {
-    //     screen: HistoryScreen,
-    //     navigationOptions: {
-    //         tabBarIcon: ({ tintColor }) => (
-    //         <Icon type="MaterialIcons" name="history" style={{fontSize:30, color:`${tintColor}`}}/>
-    //         )
-    //     },
-    // },
-    // Profile: {
-    //     screen: ProfilePage,
-    //     navigationOptions: {
-    //         tabBarIcon: ({ tintColor }) => (
-    //         <Icon type="EvilIcons" name="user" style={{fontSize:35, color:`${tintColor}`}}/>
-    //         )
-    //     },
-    // },

@@ -5,7 +5,6 @@ import firebase from 'firebase'
 import AsyncStorage from '@react-native-community/async-storage'
 
 import firebaseConfig from '../../config/firebase'
-import User from '../../assets/User'
 
 export default class AuthLoadingScreen extends React.Component {
 
@@ -13,8 +12,6 @@ export default class AuthLoadingScreen extends React.Component {
         await AsyncStorage.getItem('uid').then(
             (result) => this.props.navigation.navigate(result ? 'Tabs' : 'Login')
         )
-        // firebase.auth().onAuthStateChanged(user => {
-        // })
     }
 
     render() {

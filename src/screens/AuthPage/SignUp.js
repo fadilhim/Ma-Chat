@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { View, Text,TouchableOpacity, StyleSheet, TextInput, Modal, ScrollView, FlatList, StatusBar, Image, } from 'react-native'
-import { Button, Container, Fab, Input, Item } from 'native-base'
+import { View, Text,TouchableOpacity, StyleSheet, TextInput } from 'react-native'
+import { Button } from 'native-base'
 import firebase from 'firebase'
 import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -30,19 +30,15 @@ class SignUpScreen extends Component{
             Alert.alert('Error', 'Wrong password')
         } else {
             const data = this.state.SignUpForm
-            // await AsyncStorage.setItem('email', data.email)
             await firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
             .then(async (result) => {
                 var userPro = firebase.auth().currentUser;
                 userPro.updateProfile({ displayName: data.fullname, photoURL: data.photo })
                 await firebase.database().ref('users/' + result.user.uid).set(data)
-                    .then( (result) => {
-                        AsyncStorage.setItem('uid', result.user.uid)
-                        AsyncStorage.setItem('name', result.user.displayName)
-                        AsyncStorage.setItem('image', result.user.image)
+                    .then( () => {
+                        this.props.navigation.navigate('Login')
                     })
             })
-            // this.props.navigation.navigate('Tabs')
         }
     }
 
