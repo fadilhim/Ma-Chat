@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { SafeAreaView, Text, TextInput, TouchableOpacity, FlatList } from 'react-native'
+import { SafeAreaView, Text, TextInput, TouchableOpacity, FlatList, View } from 'react-native'
 import firebase from 'firebase'
 import User from '../../assets/User';
 
@@ -18,6 +18,16 @@ class ChatScreen extends Component {
         }
     }
 
+    UNSAFE_componentWillMount() {
+        firebase.database().ref('messages').child(User.phone).child(this.state.person.phone)
+            .on('child_added', (value) => {
+                this.setState((prevState) => {
+                    return {
+                        messageList: [...prevState.messageList, value.val()]
+                    }
+                })
+            })
+    }
 
     handleChange = (key, value) => {
         this.setState({
@@ -35,12 +45,20 @@ class ChatScreen extends Component {
                 from: User.phone
             }
             updates['messages/' + User.phone + '/' + this.state.person.phone + '/' + msgId] = message
+            updates['messages/' + this.state.person.phone + '/' + User.phone + '/' + msgId] = message
             firebase.database().ref().update(updates)
             this.setState({ textMessage: '' })
         }
     }
 
-    renderRow = ({item}) => {}
+    renderRow = ({item}) => {
+        return (
+            <View>
+                <Text>{item.from}</Text>
+                <Text>{item.message}</Text>
+            </View>
+        )
+    }
 
     render() {
         return(
@@ -48,7 +66,7 @@ class ChatScreen extends Component {
                 <FlatList 
                     data= {this.state.messageList}
                     renderItem= {this.renderRow}
-                    keyExtractor= { (item.index) => index.toString()}
+                    keyExtractor= { (item, index) => index.toString()}
                 />
                 <TextInput 
                     value={this.state.textMessage}

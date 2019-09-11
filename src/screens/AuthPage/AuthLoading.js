@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
 
 import firebaseConfig from '../../config/firebase'
@@ -13,17 +12,18 @@ export default class AuthLoadingScreen extends React.Component {
         this._bootstrapAsync()
     }
 
-    _bootstrapAsync = async () => {
-        User.phone = await AsyncStorage.getItem('userPhone')
-        this.props.navigation.navigate(User.phone ? 'Tabs' : 'Login')
+    _bootstrapAsync = () => {
+        firebase.auth().onAuthStateChanged(user => {
+            this.props.navigation.navigate(user ? 'Tabs' : 'Login')
+        })
     };
 
     render() {
         return (
-        <View>
-            <ActivityIndicator />
-            <StatusBar barStyle="default" />
-        </View>
+            <View>
+                <ActivityIndicator />
+                <StatusBar barStyle="default" />
+            </View>
         )
     }
 }

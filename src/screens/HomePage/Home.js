@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
 
 import User from '../../assets/User'
@@ -9,29 +8,36 @@ import User from '../../assets/User'
 class HomeScreen extends Component {
 
     state = {
-        users: []
+        // users: [],
+        currentUser: null
     }
 
     UNSAFE_componentWillMount() {
-        let dbRef = firebase.database().ref('users')
-        dbRef.on('child_added', ( val ) => {
-            let person = val.val()
-            person.phone = val.key
-            if (person.phone===User.phone){
-                User.name = person.name
-            } else {
-                this.setState(( prevState ) => {
-                    return {
-                        users: [...prevState.users, person]
-                    }
-                })
-            }
-        })
+        const { currentUser } = firebase.auth()
+        this.setState({ currentUser })
+        // let dbRef = firebase.database().ref('users')
+        // dbRef.on('child_added', ( val ) => {
+        //     let person = val.val()
+        //     person.phone = val.key
+        //     if (person.phone===User.phone){
+        //         User.name = person.name
+        //     } else {
+        //         this.setState(( prevState ) => {
+        //             return {
+        //                 users: [...prevState.users, person]
+        //             }
+        //         })
+        //     }
+        // })
     }
 
-    _logOut = async () => {
-        await AsyncStorage.clear()
-        this.props.navigation.navigate('AuthLoading')
+    _logOut = () => {
+        firebase.auth().signOut()
+            .then(function() {
+            })
+            .catch(function(error) {
+                console.error(error)
+            })
     }
 
     renderRow = ({item}) => {
@@ -43,9 +49,11 @@ class HomeScreen extends Component {
     }
 
     render() {
+        const { currentUser } = this.state
         console.log(this.state)
         return(
             <SafeAreaView>
+                <Text>{currentUser.username}</Text>
                 <FlatList 
                     data={this.state.users}
                     renderItem={this.renderRow}

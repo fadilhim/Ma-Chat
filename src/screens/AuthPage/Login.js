@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { View, Text,TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native'
 import { Button, Toast } from 'native-base'
-import AsyncStorage from '@react-native-community/async-storage'
+
 import firebase from 'firebase'
 
 import User from '../../assets/User'
@@ -12,16 +12,10 @@ class LoginScreen extends Component{
     constructor(props) {
         super(props)
         this.state = {
-            name: '',
-            phone: '',
+            email: '',
+            password: '',
+            errorMessage: null
         }
-    }
-
-    componentWillMount = () => {
-        AsyncStorage.getItem('userPhone')
-            .then( result => {
-                if ( result ){ this.setState({phone: result})}
-            })
     }
 
     handleChange = (key, value) => {
@@ -31,16 +25,16 @@ class LoginScreen extends Component{
     }
 
     handleSubmit = async () => {
-        if ( this.state.phone.length < 10 ) {
-            Alert.alert('Error', 'Wrong phone number!')
-        } else if ( this.state.name < 3 ) {
-            Alert.alert('Error', 'Wrong name')
+        if ( this.state.email.length < 10 ) {
+            Alert.alert('Error', 'email !')
+        } else if ( this.state.password.length < 3 ) {
+            Alert.alert('Error', 'Wrong password')
         } else {
-            //save user data
-            await AsyncStorage.setItem('userPhone', this.state.phone)
-            User.phone = this.state.phone
-            firebase.database().ref('users/' + User.phone).set({name: this.state.name})
-            this.props.navigation.navigate('Tabs');
+            firebase
+                .auth()
+                .signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then(() => this.props.navigation.navigate('Tabs'))
+                .catch(error => this.setState({ errorMessage: error.message }))
         }
     }
 
@@ -49,25 +43,26 @@ class LoginScreen extends Component{
             <View behavior="padding" style={styles.Wrapper}>
                 <View style={styles.bodyWrapper}>
                     <View >
-                        <Text style={styles.SignInTitle}>Here To Get {'\n'}Welcomed!</Text>
+                        <Text style={styles.SignInTitle}>Welcome to{'\n'}MaChat!</Text>
                     </View>
                     <View>
                         <TextInput
-                            placeholder='Phone number'
+                            placeholder='Email'
+                            keyboardType='email-address'
                             underlineColorAndroid='#e6a400'
                             placeholderTextColor='#e3dac9'
-                            keyboardType='number-pad'
                             value={this.state.phone}
                             style={styles.inputField}
-                            onChangeText={(text) => this.handleChange( 'phone', text )}
+                            onChangeText={(text) => this.handleChange( 'email', text )}
                         />
                         <TextInput
-                            placeholder='Name'
+                            placeholder='Password'
+                            secureTextEntry={true}
                             underlineColorAndroid='#e6a400'
                             placeholderTextColor='#e3dac9'
                             value={this.state.name}
                             style={styles.inputField}
-                            onChangeText={(text) => this.handleChange( 'name', text )}
+                            onChangeText={(text) => this.handleChange( 'password', text )}
                         />
                     </View>
                     <View style={{alignItems: 'center'}}>
@@ -75,7 +70,9 @@ class LoginScreen extends Component{
                             <Text style={{color:'white'}}>Login</Text>
                         </Button>
                     </View>
+                    
                 </View>
+                <View>{this.state.errorMessage ? <Text>{this.state.errorMessage}</Text> : <Text></Text> }</View>
                 <View style={styles.footerWrapper}>
                     <View style={{marginRight: 120}}>
                         <TouchableOpacity onPress={()=> this.props.navigation.navigate('SignUp')} >
@@ -112,7 +109,7 @@ const styles = StyleSheet.create({
     },
     SignInTitle: {
         fontSize: 40,
-        textAlign: 'left',
+        textAlign: 'center',
         fontWeight: 'bold',
         color: '#e3dac9',
         paddingBottom: 50
@@ -126,12 +123,13 @@ const styles = StyleSheet.create({
     SignInButton: {
         marginTop:10,
         height:45,
+        width: 200,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom:20,
         width:250,
-        borderRadius:30,
+        borderRadius:5,
         backgroundColor: "#e6a400",
     },
     text :{

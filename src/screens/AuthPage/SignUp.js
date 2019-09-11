@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
 import { View, Text,TouchableOpacity, StyleSheet, TextInput, Modal, ScrollView, FlatList, StatusBar, Image, } from 'react-native'
-import { Button, Container, Fab, Input, Item } from 'native-base';
+import { Button, Container, Fab, Input, Item } from 'native-base'
+import firebase from 'firebase'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 class SignUpScreen extends Component{
     constructor(props) {
         super(props)
         this.state = {
-            SignUpForm: {}
+            SignUpForm: {},
+            errorMessage: null
         }
     }
 
@@ -20,49 +22,39 @@ class SignUpScreen extends Component{
         })
     }
 
-    handleSubmit = () => {
+    handleSubmit = () => {        
         const data = this.state.SignUpForm
-        this.props.dispatch(register(data))
-            .then(res => {
-                if(res.value.data.status === 401){
-                    console.log('gagal')
-                }else{
-                    this.registered()
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+        firebase.database().ref('users/' + data.username).set(data)
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(data.email, data.password)
     }
 
-    registered = () => {
-        this.props.navigation.navigate('Login')
-    }
 
     render() {
         return(
             <View behavior="padding" style={styles.Wrapper}>
                 <View style={styles.bodyWrapper}>
                     <View >
-                        <Text style={styles.SignInTitle}>Welcome,{'\n'}Create your{'\n'}account now!</Text>
+                        <Text style={styles.SignInTitle}>Create your{'\n'}MaChat now!</Text>
                     </View>
                     <View>
                         <TextInput 
-                            placeholder='username'
-                            underlineColorAndroid='#207561'
-                            placeholderTextColor='#e3dac9'
-                            style={styles.inputField}
-                            onChangeText={text => this.handleChange( 'username', text )}
-                        />
-                        <TextInput 
-                            placeholder='fullname'
+                            placeholder='Full Name'
                             underlineColorAndroid='#207561'
                             placeholderTextColor='#e3dac9'
                             style={styles.inputField}
                             onChangeText={text => this.handleChange( 'fullname', text )}
                         />
+                        <TextInput 
+                            placeholder='Username'
+                            underlineColorAndroid='#207561'
+                            placeholderTextColor='#e3dac9'
+                            style={styles.inputField}
+                            onChangeText={text => this.handleChange( 'username', text )}
+                        />
                         <TextInput
-                            placeholder='email'
+                            placeholder='Email'
                             underlineColorAndroid='#207561'
                             placeholderTextColor='#e3dac9'
                             keyboardType='email-address'
@@ -70,12 +62,19 @@ class SignUpScreen extends Component{
                             onChangeText={text => this.handleChange( 'email', text )}
                         />
                         <TextInput
-                            placeholder='password'
+                            placeholder='Password'
                             underlineColorAndroid='#207561'
                             placeholderTextColor='#e3dac9'
                             secureTextEntry={true}
                             style={styles.inputField}
                             onChangeText={text => this.handleChange( 'password', text )}
+                        />
+                        <TextInput 
+                            placeholder='Photo (Url)'
+                            underlineColorAndroid='#207561'
+                            placeholderTextColor='#e3dac9'
+                            style={styles.inputField}
+                            onChangeText={text => this.handleChange( 'photo', text )}
                         />
                     </View>
                     <View style={{alignItems: 'flex-end'}}>
@@ -104,7 +103,7 @@ class SignUpScreen extends Component{
 
 const styles = StyleSheet.create({
     Wrapper : {
-        flex:1,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#e6a400'
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     },
     SignInTitle: {
         fontSize: 35,
-        textAlign: 'left',
+        textAlign: 'center',
         fontWeight: 'bold',
         color: '#207561',
         paddingBottom: 50
@@ -136,12 +135,13 @@ const styles = StyleSheet.create({
         marginTop:10,
         marginRight: 20,
         height:45,
+        width: 200,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom:20,
         width:250,
-        borderRadius:30,
+        borderRadius:5 ,
         backgroundColor: "#207561",
     },
     text :{

@@ -24,7 +24,7 @@ class SplashScreen extends Component {
         return (
         <View style={styles.viewStyles}>
             <Text style={styles.textStyles}>
-                BookZ
+                MaChat
             </Text>
         </View>
         );
