@@ -29,7 +29,6 @@ class HomeScreen extends Component {
                 }
             })
         })
-        console.log('will',this.state)
     }
 
     _logOut = () => {
@@ -53,7 +52,6 @@ class HomeScreen extends Component {
     }
 
     render() {
-        console.log('will',this.state)
         return(
             <SafeAreaView>
                 <FlatList 
