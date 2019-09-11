@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { View, Text,TouchableOpacity, StyleSheet, TextInput, Modal, ScrollView, FlatList, StatusBar, Image, } from 'react-native'
 import { Button, Container, Fab, Input, Item } from 'native-base'
 import firebase from 'firebase'
+import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 class SignUpScreen extends Component{
@@ -22,12 +23,27 @@ class SignUpScreen extends Component{
         })
     }
 
-    handleSubmit = () => {        
-        const data = this.state.SignUpForm
-        firebase.database().ref('users/' + data.username).set(data)
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(data.email, data.password)
+    handleSubmit = async() => {
+        if ( this.state.SignUpForm.email.length < 10 ) {
+            Alert.alert('Error', 'email !')
+        } else if ( this.state.SignUpForm.password.length < 3 ) {
+            Alert.alert('Error', 'Wrong password')
+        } else {
+            const data = this.state.SignUpForm
+            // await AsyncStorage.setItem('email', data.email)
+            await firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+            .then(async (result) => {
+                var userPro = firebase.auth().currentUser;
+                userPro.updateProfile({ displayName: data.fullname, photoURL: data.photo })
+                await firebase.database().ref('users/' + result.user.uid).set(data)
+                    .then( (result) => {
+                        AsyncStorage.setItem('uid', result.user.uid)
+                        AsyncStorage.setItem('name', result.user.displayName)
+                        AsyncStorage.setItem('image', result.user.image)
+                    })
+            })
+            this.props.navigation.navigate('Tabs')
+        }
     }
 
 

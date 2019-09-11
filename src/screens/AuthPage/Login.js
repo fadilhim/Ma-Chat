@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { View, Text,TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native'
 import { Button, Toast } from 'native-base'
-
+import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
 
 import User from '../../assets/User'
@@ -30,10 +30,16 @@ class LoginScreen extends Component{
         } else if ( this.state.password.length < 3 ) {
             Alert.alert('Error', 'Wrong password')
         } else {
-            firebase
-                .auth()
-                .signInWithEmailAndPassword(this.state.email, this.state.password)
-                .then(() => this.props.navigation.navigate('Tabs'))
+            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then( async (result) =>{
+                    await firebase.database().ref('users/' + result.user.uid).update({ status: 'online' })
+                    AsyncStorage.setItem('uid', result.user.uid)
+                    AsyncStorage.setItem('name', result.user.displayName)
+                    AsyncStorage.setItem('image', result.user.image)
+                    AsyncStorage.getItem('uid', (error, result) => {
+                        this.props.navigation.navigate('Tabs')
+                    })
+                })
                 .catch(error => this.setState({ errorMessage: error.message }))
         }
     }

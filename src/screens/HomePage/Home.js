@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import firebase from 'firebase'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import User from '../../assets/User'
 
@@ -12,28 +13,29 @@ class HomeScreen extends Component {
         currentUser: null
     }
 
-    UNSAFE_componentWillMount() {
+    UNSAFE_componentWillMount = async () => {
+        const uid = await AsyncStorage.getItem('uid')
         const { currentUser } = firebase.auth()
-        this.setState({ currentUser })
-        // let dbRef = firebase.database().ref('users')
-        // dbRef.on('child_added', ( val ) => {
-        //     let person = val.val()
-        //     person.phone = val.key
-        //     if (person.phone===User.phone){
-        //         User.name = person.name
-        //     } else {
-        //         this.setState(( prevState ) => {
-        //             return {
-        //                 users: [...prevState.users, person]
-        //             }
-        //         })
-        //     }
-        // })
+        dbRef.on('child_added', ( value ) => {
+            console.warn(value)
+            let person = value.val()
+            person.uid = value.key
+            if (person.username === User.phone){
+                User.name = person.name
+            // } else {
+            //     this.setState(( prevState ) => {
+            //         return {
+            //             users: [...prevState.users, person]
+            //         }
+            //     })
+            }
+        })
     }
 
     _logOut = () => {
         firebase.auth().signOut()
             .then(function() {
+                AsyncStorage.clear()
             })
             .catch(function(error) {
                 console.error(error)
@@ -53,7 +55,7 @@ class HomeScreen extends Component {
         console.log(this.state)
         return(
             <SafeAreaView>
-                <Text>{currentUser.username}</Text>
+                {/* <Text>{currentUser.username}</Text> */}
                 <FlatList 
                     data={this.state.users}
                     renderItem={this.renderRow}
