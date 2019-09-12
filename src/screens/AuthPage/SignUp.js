@@ -11,7 +11,8 @@ class SignUpScreen extends Component{
         super(props)
         this.state = {
             SignUpForm: {},
-            errorMessage: null
+            errorMessage: null,
+            emailInputError: false,
         }
     }
 
@@ -26,6 +27,9 @@ class SignUpScreen extends Component{
     handleSubmit = async() => {
         if ( this.state.SignUpForm.email.length < 10 ) {
             Alert.alert('Error', 'email !')
+            this.setState({
+                emailInputError: true
+            })
         } else if ( this.state.SignUpForm.password.length < 3 ) {
             Alert.alert('Error', 'Wrong password')
         } else {

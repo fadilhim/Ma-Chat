@@ -1,10 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image, PermissionsAndroid } from 'react-native';
 import firebase from 'firebase'
 import AsyncStorage from '@react-native-community/async-storage'
 
 class HomeScreen extends Component {
+
+    constructor(props) {
+        super(props)
+    }
 
     state = {
         users: [],
@@ -12,7 +16,7 @@ class HomeScreen extends Component {
     }
 
     UNSAFE_componentWillMount = async () => {
-        AsyncStorage.getItem('uid').then(
+        await AsyncStorage.getItem('uid').then(
             (uid) => this.setState({
                 uid: uid
             })
@@ -29,6 +33,33 @@ class HomeScreen extends Component {
         })
     }
 
+    componentDidMount = async () => {
+        let hasLocationPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+        if(!hasLocationPermission){
+            hasLocationPermission = await this.requestLocationPermission()
+        }
+    }
+
+    requestLocationPermission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                title: 'Ma-Chat Location Permission',
+                message:
+                    `Ma-Chat needs permission to get your location`,
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            return granted === PermissionsAndroid.RESULTS.GRANTED
+        } catch (err) {
+            console.warn(err);
+            return false
+        }
+    }
+
     renderRow = ({item}) => {
         if (item.uid != this.state.uid )
         return (
@@ -36,14 +67,9 @@ class HomeScreen extends Component {
                 <Image source={{uri: item.photo}} style={{height: 50, width: 50, borderRadius: 50}} />
                 <View style={{paddingLeft: 10 }}>
                     <Text style={{ fontSize: 20, color: 'white' }}>{item.fullname}</Text>
-                    {/* <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        {
-                            item.status == 'online'? 
-                            <View style={{ height: 10, width: 10, backgroundColor: 'blue', borderRadius: 50 }}></View>:
-                            <View style={{ height: 10, width: 10, backgroundColor: 'grey', borderRadius: 50 }}></View>
-                        }
-                        <Text style={{ fontSize: 15, color: 'grey', paddingLeft: 5 }}>{item.status}</Text>
-                    </View> */}
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+
+                    </View>
                 </View>
             </TouchableOpacity>
         )
