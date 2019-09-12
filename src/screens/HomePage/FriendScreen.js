@@ -12,7 +12,7 @@ class FriendScreen extends Component {
     }
 
     UNSAFE_componentWillMount = async () => {
-        AsyncStorage.getItem('uid').then(
+        await AsyncStorage.getItem('uid').then(
             (uid) => this.setState({
                 uid: uid
             })
@@ -29,24 +29,25 @@ class FriendScreen extends Component {
         })
     }
 
-    renderRow = ({item}) => {
-        if (item.uid != this.state.uid )
-        return (
-            <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('', {item: item}) }>
-                <Image source={{uri: item.photo}} style={styles.friendImage} />
-                <View style={{paddingLeft: 10 }}>
-                    <Text style={styles.friendName}>{item.fullname}</Text>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        {
-                            item.status == 'online'? 
-                            <View style={styles.friendOnline}></View>:
-                            <View style={styles.friendOffline}></View>
-                        }
-                        <Text style={styles.friendStatus}>{item.status}</Text>
+    _renderRow = ({item}) => {
+        if (item.uid != this.state.uid ){
+            return (
+                <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('', {item: item}) }>
+                    <Image source={{uri: item.photo}} style={styles.friendImage} />
+                    <View style={{paddingLeft: 10 }}>
+                        <Text style={styles.friendName}>{item.fullname}</Text>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            {
+                                item.status == 'online'? 
+                                <View style={styles.friendOnline}></View>:
+                                <View style={styles.friendOffline}></View>
+                            }
+                            <Text style={styles.friendStatus}>{item.status}</Text>
+                        </View>
                     </View>
-                </View>
-            </TouchableOpacity>
-        )
+                </TouchableOpacity>
+            )
+        }
     }
 
     render() {
@@ -54,7 +55,7 @@ class FriendScreen extends Component {
             <SafeAreaView style={styles.container}>
                 <FlatList 
                     data={this.state.users}
-                    renderItem={this.renderRow}
+                    renderItem={this._renderRow}
                     keyExtractor={ (item) => item.username }
                 />
             </SafeAreaView>

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image, PermissionsAndroid } from 'react-native';
 import firebase from 'firebase'
 import AsyncStorage from '@react-native-community/async-storage'
+import Geolocation from 'react-native-geolocation-service'
 
 class HomeScreen extends Component {
 
@@ -30,6 +31,7 @@ class HomeScreen extends Component {
                     users: [...prevState.users, person]
                 }
             })
+
         })
     }
 
@@ -37,6 +39,17 @@ class HomeScreen extends Component {
         let hasLocationPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
         if(!hasLocationPermission){
             hasLocationPermission = await this.requestLocationPermission()
+        } else {
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    console.warn(position);
+                },
+                (error) => {
+                    // See error code charts below.
+                    console.warn(error.code, error.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            )
         }
     }
 
@@ -60,19 +73,20 @@ class HomeScreen extends Component {
         }
     }
 
-    renderRow = ({item}) => {
-        if (item.uid != this.state.uid )
-        return (
-            <TouchableOpacity style={{ padding: 10, flexDirection: 'row' }} onPress={ () => this.props.navigation.navigate('Chat', {item: item}) }>
-                <Image source={{uri: item.photo}} style={{height: 50, width: 50, borderRadius: 50}} />
-                <View style={{paddingLeft: 10 }}>
-                    <Text style={{ fontSize: 20, color: 'white' }}>{item.fullname}</Text>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    _renderRow = ({item}) => {
+        if (item.uid != this.state.uid ){
+            return (
+                <TouchableOpacity style={{ padding: 10, flexDirection: 'row' }} onPress={ () => this.props.navigation.navigate('Chat', {item: item}) }>
+                    <Image source={{uri: item.photo}} style={{height: 50, width: 50, borderRadius: 50}} />
+                    <View style={{paddingLeft: 10 }}>
+                        <Text style={{ fontSize: 20, color: 'white' }}>{item.fullname}</Text>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
 
+                        </View>
                     </View>
-                </View>
-            </TouchableOpacity>
-        )
+                </TouchableOpacity>
+            )
+        }
     }
 
     render() {
@@ -80,7 +94,7 @@ class HomeScreen extends Component {
             <SafeAreaView style={{backgroundColor: '#353839', flex: 1}}>
                 <FlatList 
                     data={this.state.users}
-                    renderItem={this.renderRow}
+                    renderItem={this._renderRow}
                     keyExtractor={ (item) => item.username }
                 />
             </SafeAreaView>
