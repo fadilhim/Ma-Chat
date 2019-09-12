@@ -54,8 +54,9 @@ const HomeTabNavigator = createBottomTabNavigator(
             showIcon: true,
             activeTintColor: 'white',
             inactiveTintColor: '#999999',
-            activeBackgroundColor: '#207561',
-            inactiveBackgroundColor: '#207561'
+            activeBackgroundColor: '#232b2b',
+            inactiveBackgroundColor: '#232b2b',
+            borderTopWidth: 0,
         },
     }
 )

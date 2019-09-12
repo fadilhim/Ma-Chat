@@ -1,8 +1,21 @@
 /* eslint-disable prettier/prettier */
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
+import firebase from 'firebase'
 
 class ProfileScreen extends Component {
+
+    _logOut = async () => {
+        await AsyncStorage.clear()
+            .then(() => {
+                firebase.auth().signOut()
+                this.props.navigation.navigate('Login')
+            })
+            .catch(function(error) {
+                console.error(error)
+            })
+    }
 
     render() {
         return (
@@ -10,6 +23,9 @@ class ProfileScreen extends Component {
             <Text style={styles.textStyles}>
                 MaChat
             </Text>
+            <TouchableOpacity onPress={ () => this._logOut()}>
+                <Text>LogOut</Text>
+            </TouchableOpacity>
         </View>
         );
     }
@@ -20,7 +36,7 @@ const styles = {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#207561'
+        backgroundColor: '#353839'
     },
     textStyles: {
         color: 'white',

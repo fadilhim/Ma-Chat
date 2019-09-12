@@ -29,38 +29,24 @@ class HomeScreen extends Component {
         })
     }
 
-    _logOut = async () => {
-        await AsyncStorage.clear()
-            .then(() => {
-                firebase.auth().signOut()
-                this.props.navigation.navigate('Login')
-            })
-            .catch(function(error) {
-                console.error(error)
-            })
-    }
-
     renderRow = ({item}) => {
         if (item.uid != this.state.uid )
         return (
-            <TouchableOpacity style={{ padding: 10, borderBottomColor: 'black', borderBottomWidth: 1}} onPress={ () => this.props.navigation.navigate('Chat', {item: item}) }>
-                <Image source={{uri: item.photo}} style={{height: 60, width: 60, borderRadius: 60}} />
-                <Text style={{ fontSize: 20, color: 'black' }}>{item.fullname}</Text>
+            <TouchableOpacity style={{ padding: 10, flexDirection: 'row' }} onPress={ () => this.props.navigation.navigate('Chat', {item: item}) }>
+                <Image source={{uri: item.photo}} style={{height: 50, width: 50, borderRadius: 50}} />
+                <Text style={{ fontSize: 20, color: 'white', paddingLeft: 10 }}>{item.fullname}</Text>
             </TouchableOpacity>
         )
     }
 
     render() {
         return(
-            <SafeAreaView>
+            <SafeAreaView style={{backgroundColor: '#353839', flex: 1}}>
                 <FlatList 
                     data={this.state.users}
                     renderItem={this.renderRow}
                     keyExtractor={ (item) => item.username }
                 />
-                <TouchableOpacity onPress={ () => this._logOut()}>
-                    <Text>LogOut</Text>
-                </TouchableOpacity>
             </SafeAreaView>
         )
     }
