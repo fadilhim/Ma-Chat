@@ -12,7 +12,10 @@ class LoginScreen extends Component{
         this.state = {
             email: '',
             password: '',
-            errorMessage: null
+            errorMessage: null,
+            invalidEmailError: false,
+            userNotFoundError: false,
+            wrongPasswordError: false
         }
     }
 
@@ -23,11 +26,11 @@ class LoginScreen extends Component{
     }
 
     handleSubmit = async () => {
-        if ( this.state.email.length < 10 ) {
-            Alert.alert('Error', 'email !')
-        } else if ( this.state.password.length < 3 ) {
-            Alert.alert('Error', 'Wrong password')
-        } else {
+        // if ( this.state.email.length < 10 ) {
+        //     Alert.alert('Error', 'email !')
+        // } else if ( this.state.password.length < 3 ) {
+        //     Alert.alert('Error', 'Wrong password')
+        // } else {
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                 .then( async (result) =>{
                     await firebase.database().ref('users/' + result.user.uid).update({ status: 'online' })
@@ -36,8 +39,18 @@ class LoginScreen extends Component{
                     AsyncStorage.setItem('image', result.user.image)
                     this.props.navigation.navigate('Tabs')
                 })
-                .catch(error => this.setState({ errorMessage: error.message }))
-        }
+                .catch(error => {
+                    console.log(error)
+                    // this.setState({ errorMessage: JSON.stringify(error) })
+                    if(error.code == 'auth/invalid-email'){
+                        this.setState({ invalidEmailError: true })
+                    } else if(error.code == 'auth/user-not-found'){
+                        this.setState({ userNotFoundError: true })
+                    } else if(error.code == 'auth/wrong-password'){
+                        this.setState({ wrongPasswordError: true })
+                    }
+                })
+        // }
     }
 
     render() {
@@ -74,7 +87,14 @@ class LoginScreen extends Component{
                     </View>
                     
                 </View>
-                <View>{this.state.errorMessage ? <Text>{this.state.errorMessage}</Text> : <Text></Text> }</View>
+                <View>
+                    {
+                        
+                        this.state.invalidEmailError ? <Text>Please input email formated</Text> :
+                        this.state.wrongPasswordError ? <Text>Email/Password is wrong!</Text> :
+                        this.state.userNotFoundError ? <Text>User doesn't exist! please register first!</Text> : <Text></Text>
+                    }
+                </View>
                 <View style={styles.footerWrapper}>
                     <View style={{marginRight: 120}}>
                         <TouchableOpacity onPress={()=> this.props.navigation.navigate('SignUp')} >

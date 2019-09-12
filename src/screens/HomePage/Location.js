@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 
 class LocationScreen extends Component {
@@ -23,7 +23,7 @@ class LocationScreen extends Component {
     }
 }
 
-const styles = {
+const styles = StyleSheet.create({
     viewStyles: {
         flex: 1,
         width: '100%',
@@ -37,6 +37,6 @@ const styles = {
         fontSize: 40,
         fontWeight: 'bold',
     },
-}
+})
 
 export default LocationScreen;

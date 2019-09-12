@@ -26,6 +26,7 @@ class SplashScreen extends Component {
             <Text style={styles.textStyles}>
                 MaChat
             </Text>
+            <Text style={{color: '#d0d0d0'}}>No 1 Messaging App Pogung</Text>
         </View>
         );
     }
