@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image } from 'rea
 import firebase from 'firebase'
 import AsyncStorage from '@react-native-community/async-storage'
 
-class HomeScreen extends Component {
+class FriendScreen extends Component {
 
     state = {
         users: [],
@@ -32,18 +32,18 @@ class HomeScreen extends Component {
     renderRow = ({item}) => {
         if (item.uid != this.state.uid )
         return (
-            <TouchableOpacity style={{ padding: 10, flexDirection: 'row' }} onPress={ () => this.props.navigation.navigate('Chat', {item: item}) }>
+            <TouchableOpacity style={{ padding: 10, flexDirection: 'row' }} onPress={ () => this.props.navigation.navigate('', {item: item}) }>
                 <Image source={{uri: item.photo}} style={{height: 50, width: 50, borderRadius: 50}} />
                 <View style={{paddingLeft: 10 }}>
                     <Text style={{ fontSize: 20, color: 'white' }}>{item.fullname}</Text>
-                    {/* <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         {
                             item.status == 'online'? 
                             <View style={{ height: 10, width: 10, backgroundColor: 'blue', borderRadius: 50 }}></View>:
                             <View style={{ height: 10, width: 10, backgroundColor: 'grey', borderRadius: 50 }}></View>
                         }
                         <Text style={{ fontSize: 15, color: 'grey', paddingLeft: 5 }}>{item.status}</Text>
-                    </View> */}
+                    </View>
                 </View>
             </TouchableOpacity>
         )
@@ -62,4 +62,4 @@ class HomeScreen extends Component {
     }
 }
 
-export default HomeScreen
+export default FriendScreen

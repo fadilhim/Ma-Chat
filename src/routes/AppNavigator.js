@@ -16,17 +16,27 @@ import SignUpScreen from '../screens/AuthPage/SignUp'
 
 import HomeScreen from '../screens/HomePage/Home'
 //HomePage screen
+import FriendScreen from '../screens/HomePage/FriendScreen'
 import ChatScreen from '../screens/HomePage/ChatScreen'
 import ProfileScreen from '../screens/HomePage/Profile'
 import LocationScreen from '../screens/HomePage/Location'
 
 const HomeTabNavigator = createBottomTabNavigator(
-    { 
+    {
+        Friend: {
+            screen: FriendScreen,
+            navigationOptions: {
+                tabBarIcon: ({ tintColor }) => (  
+                <Icon type="FontAwesome5" name="user-friends" style={{fontSize:25 , color:`${tintColor}`}} />
+                ),
+                title: 'Friends'
+            },
+        },
         Home: {
             screen: HomeScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (  
-                <Icon type="EvilIcons" name="comment" style={{fontSize:35 , color:`${tintColor}`}} />
+                <Icon type="MaterialCommunityIcons" name="chat" style={{fontSize:25 , color:`${tintColor}`}} />
                 ),
                 title: 'Chats'
             },
@@ -35,7 +45,7 @@ const HomeTabNavigator = createBottomTabNavigator(
             screen: LocationScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                <Icon type="EvilIcons" name="location" style={{fontSize:35, color:`${tintColor}`}}/>
+                <Icon type="MaterialIcons" name="location-on" style={{fontSize:25, color:`${tintColor}`}}/>
                 ),
                 title: 'Location'
             },
@@ -44,7 +54,7 @@ const HomeTabNavigator = createBottomTabNavigator(
             screen: ProfileScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                <Icon type="EvilIcons" name="user" style={{fontSize:35, color:`${tintColor}`}}/>
+                <Icon type="FontAwesome5" name="user" style={{fontSize:25, color:`${tintColor}`}}/>
                 ),
                 title: 'Profile'
             },
