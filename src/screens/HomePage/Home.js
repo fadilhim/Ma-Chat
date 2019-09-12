@@ -64,6 +64,7 @@ class HomeScreen extends Component {
                     buttonNeutral: 'Ask Me Later',
                     buttonPositive: 'OK',
                     buttonNegative: 'Cancel',
+
                 },
             );
             return granted === PermissionsAndroid.RESULTS.GRANTED
@@ -87,6 +88,7 @@ class HomeScreen extends Component {
                 </TouchableOpacity>
             )
         }
+
     }
 
     render() {
