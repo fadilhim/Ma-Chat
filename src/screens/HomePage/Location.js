@@ -62,6 +62,8 @@ class LocationScreen extends Component {
             {userList.map( (user) => (
                 user.uid == this.state.userUid ?
                     <Marker
+                        title={user.fullname || null}
+                        description={'Last Seen: ' + new Date(user.lastSeen) || null}
                         key={this.state.userPosition.latitude + this.state.userPosition.longitude}
                         coordinate={{ 
                             latitude: this.state.userPosition.latitude,
@@ -69,14 +71,18 @@ class LocationScreen extends Component {
                         }}
                     >
                         <View>
-                            <Image 
+                            <Image
+                                title={user.fullname || null}
+                                description={'Last Seen: ' + new Date(user.lastSeen) || null}
                                 source={{ uri: user.photo}}
-                                style={{ height: 45, width: 45, borderRadius: 50, borderColor: 'green', borderWidth: 3}}
+                                style={{ height: 45, width: 45, borderRadius: 50, borderColor: '#ffcc00', borderWidth: 3}}
                             />
                         </View>
                     </Marker>
                 : user.status == 'online' ?
                     <Marker
+                        title={user.fullname || null}
+                        description={'Last Seen: ' + new Date(user.lastSeen) || null}
                         key={user.position.latitude + user.position.longitude}
                         coordinate={{ 
                             latitude: user.position.latitude,
@@ -86,7 +92,7 @@ class LocationScreen extends Component {
                         <View>
                             <Image 
                                 source={{ uri: user.photo}}
-                                style={{ height: 45, width: 45, borderRadius: 50, borderColor: 'blue', borderWidth: 3}}
+                                style={{ height: 45, width: 45, borderRadius: 50, borderColor: '#64a338', borderWidth: 3}}
                             />
                         </View>
                     </Marker>
@@ -100,7 +106,7 @@ class LocationScreen extends Component {
                     <View>
                         <Image 
                             source={{ uri: user.photo}}
-                            style={{ height: 45, width: 45, borderRadius: 50, borderColor: 'grey', borderWidth: 3}}
+                            style={{ height: 45, width: 45, borderRadius: 50, borderColor: '#87a2c7', borderWidth: 3}}
                         />
                     </View>
                 </Marker>

@@ -46,7 +46,10 @@ class HomeScreen extends Component {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude
                     }
-                    firebase.database().ref('users/' + this.state.uid).update({ position: userPosition })
+                    firebase.database().ref('users/' + this.state.uid).update({
+                        position: userPosition,
+                        lastSeen: position.timestamp
+                    })
                 },
                 (error) => {
                     // See error code charts below.
