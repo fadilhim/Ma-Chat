@@ -106,7 +106,7 @@ class HomeScreen extends Component {
                 <View style={{height: '7%', backgroundColor: '#353839', justifyContent: 'center', marginBottom: 2, marginTop: 7}}>
                     <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Chats</Text>
                 </View>
-                {this.state.users ?
+                {this.state.users.length > 0 ?
                     <FlatList 
                         data={this.state.users}
                         renderItem={this._renderRow}

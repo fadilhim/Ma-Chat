@@ -56,7 +56,7 @@ class ProfileScreen extends Component {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.profileLabel}>{user.fullname}</Text>
-                    <Image style={styles.avatar} source={{uri: 'https://cdn3.iconfinder.com/data/icons/avatars-15/64/_Ninja-2-512.png' }}></Image>
+                    <Image style={styles.avatar} source={{uri: user.photo }}></Image>
                     <TouchableOpacity onPress={ () => this._logOut()} style={styles.logOutButton}>
                         <Text style={{color: '#696969', fontWeight: 'bold'}}>Log Out</Text>
                     </TouchableOpacity>

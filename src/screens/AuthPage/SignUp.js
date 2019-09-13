@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
 import { View, Text,TouchableOpacity, StyleSheet, TextInput } from 'react-native'
-import { Button } from 'native-base'
+import { Button, Toast } from 'native-base'
 import firebase from 'firebase'
-import AsyncStorage from '@react-native-community/async-storage'
-import Icon from 'react-native-vector-icons/FontAwesome'
+// import AsyncStorage from '@react-native-community/async-storage'
+// import Icon from 'react-native-vector-icons/FontAwesome'
 
 class SignUpScreen extends Component{
     constructor(props) {
@@ -45,7 +45,7 @@ class SignUpScreen extends Component{
                 emailInputError: true
             })
         }
-        if ( !this.passwordRegex(this.state.SignUpForm.password.length) ) {
+        if ( !this.passwordRegex(this.state.SignUpForm.password) ) {
             this.setState({
                 passwordInputError: true
             })
@@ -57,6 +57,10 @@ class SignUpScreen extends Component{
                 userPro.updateProfile({ displayName: data.fullname, photoURL: data.photo })
                 await firebase.database().ref('users/' + result.user.uid).set(data)
                     .then( () => {
+                        Toast.show({
+                            text: 'Register Succes!',
+                            buttonText: 'Okay'
+                        })
                         this.props.navigation.navigate('Login')
                     })
             })

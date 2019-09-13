@@ -63,7 +63,7 @@ class LocationScreen extends Component {
                 user.uid == this.state.userUid ?
                     <Marker
                         title={user.fullname || null}
-                        description={'Last Seen: ' + new Date(user.lastSeen) || null}
+                        description={user.status || null}
                         key={this.state.userPosition}
                         coordinate={{ 
                             latitude: this.state.userPosition.latitude,
@@ -88,6 +88,7 @@ class LocationScreen extends Component {
                             latitude: user.position.latitude,
                             longitude: user.position.longitude
                         }}
+                        onCalloutPress={ () => this.props.navigation.navigate('Chat', {item: user}) }
                     >
                         <View>
                             <Image 
@@ -97,11 +98,14 @@ class LocationScreen extends Component {
                         </View>
                     </Marker>
                 :   <Marker
-                    key={user.position.latitude + user.position.longitude}
-                    coordinate={{ 
-                        latitude: user.position.latitude,
-                        longitude: user.position.longitude
-                    }}
+                        title={user.fullname || null}
+                        description={'Last Seen: ' + new Date(user.lastSeen) || null}
+                        key={user.position.latitude + user.position.longitude}
+                        coordinate={{ 
+                            latitude: user.position.latitude,
+                            longitude: user.position.longitude
+                        }}
+                        onCalloutPress={ () => this.props.navigation.navigate('Chat', {item: user}) }
                 >
                     <View>
                         <Image 
