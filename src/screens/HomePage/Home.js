@@ -32,7 +32,6 @@ class HomeScreen extends Component {
                     users: [...prevState.users, person]
                 }
             })
-
         })
     }
 
@@ -89,9 +88,9 @@ class HomeScreen extends Component {
                     <Image source={{uri: item.photo}} style={{height: 50, width: 50, borderRadius: 50}} />
                     <View style={{paddingLeft: 10 }}>
                         <Text style={{ fontSize: 20, color: 'white' }}>{item.fullname}</Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        {/* <View style={{flexDirection: 'row', alignItems: 'center'}}>
 
-                        </View>
+                        </View> */}
                     </View>
                 </TouchableOpacity>
             )

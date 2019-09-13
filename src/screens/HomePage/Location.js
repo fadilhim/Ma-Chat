@@ -9,35 +9,50 @@ class LocationScreen extends Component {
     constructor(props){
         super(props)
         this.state= {
+            users: [],
             userPosition: false,
+            userUid: null
         }
     }
 
     componentDidMount = async () => {
+        //Get current user position
         await AsyncStorage.getItem('uid').then(
             async (uid) => {
                 await firebase.database().ref('users/' + uid + '/position').once('value').then(
                     (value) => {
-                        this.setState( {userPosition: value} )
-                        console.warn(value, 'res')
-                        console.warn(this.state.userPosition, 'state')
+                        this.setState( {userPosition: value.val()} )
                     }
                 )
+                this.setState({userUid: uid})
             }
         )
+
+        //Get all user in firebase to add marker in maps
+        let dbRef = firebase.database().ref('users')
+        await dbRef.on('child_added', ( value ) => {
+            let person = value.val()
+            person.uid = value.key
+            this.setState(( prevState ) => {
+                return {
+                    users: [...prevState.users, person]
+                }
+            })
+        })
     }
 
     render() {
-        console.warn(this.state.userPosition, 'position')
-        console.warn(this.state.userPosition.latitude, 'positionLatitude')
+        const userList = this.state.users
+        console.warn(this.state.userPosition.latitude)
+
         return (
         <View style={styles.viewStyles}>
             <MapView
                 style={{width: '100%', height: '100%'}}
                 provider={PROVIDER_GOOGLE}
-                initialRegion={{
-                    latitude: -7.24917,
-                    longitude: 112.75083,
+                region={{
+                    latitude: this.state.userPosition.latitude || 0,
+                    longitude: this.state.userPosition.longitude || 0,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
@@ -45,13 +60,31 @@ class LocationScreen extends Component {
                 showsUserLocation={true}
                 followsUserLocation={true}
             >
-                {/* <Marker
-                    key={this.state.userPosition.latitude + this.state.userPosition.longitude}
+            {userList.map( (user) => (
+                user.uid == this.state.userUid ?
+                    <Marker
+                        key={this.state.userPosition.latitude + this.state.userPosition.longitude}
+                        coordinate={{ 
+                            latitude: this.state.userPosition.latitude,
+                            longitude: this.state.userPosition.longitude
+                        }}
+                    />
+                : user.status == 'online' ?
+                    <Marker
+                        key={user.position.latitude + user.position.longitude}
+                        coordinate={{ 
+                            latitude: user.position.latitude,
+                            longitude: user.position.longitude
+                        }}
+                    />
+                :   <Marker
+                    key={user.position.latitude + user.position.longitude}
                     coordinate={{ 
-                        latitude: Number(this.state.userPosition.latitude),
-                        longitude: Number(this.state.userPosition.longitude)
+                        latitude: user.position.latitude,
+                        longitude: user.position.longitude
                     }}
-                /> */}
+                />
+            ))}
             </MapView>
         </View>
         );
