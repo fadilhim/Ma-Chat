@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#e6a400",
     },
     text :{
-        color: '#01024e',
+        color: 'black',
         fontSize: 15,
     },
 })

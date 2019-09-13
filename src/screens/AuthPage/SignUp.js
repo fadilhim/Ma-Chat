@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#207561",
     },
     text :{
-        color: '#4B4C72',
+        color: 'black',
         fontSize: 15,
     },
 });
