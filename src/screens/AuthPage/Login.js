@@ -99,7 +99,7 @@ class LoginScreen extends Component{
                         </TouchableOpacity>
                     </View>
                     <View >
-                        <TouchableOpacity onPress={()=> this.loggingIn()} >
+                        <TouchableOpacity onPress={() => {}} >
                             <Text style={styles.text}>Forgot Password</Text>
                         </TouchableOpacity>
                     </View>
