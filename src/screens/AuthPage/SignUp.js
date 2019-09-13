@@ -10,9 +10,13 @@ class SignUpScreen extends Component{
     constructor(props) {
         super(props)
         this.state = {
-            SignUpForm: {},
+            SignUpForm: {
+                photo: 'https://previews.123rf.com/images/triken/triken1608/triken160800029/61320775-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration-i.jpg'
+            },
             errorMessage: null,
+            emailInUseError: false,
             emailInputError: false,
+            passwordInputError: false,
         }
     }
 
@@ -26,12 +30,14 @@ class SignUpScreen extends Component{
 
     handleSubmit = async() => {
         if ( this.state.SignUpForm.email.length < 10 ) {
-            Alert.alert('Error', 'email !')
             this.setState({
                 emailInputError: true
             })
-        } else if ( this.state.SignUpForm.password.length < 3 ) {
-            Alert.alert('Error', 'Wrong password')
+        }
+        if ( this.state.SignUpForm.password.length < 3 ) {
+            this.setState({
+                passwordInputError: true
+            })
         } else {
             const data = this.state.SignUpForm
             await firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
@@ -42,6 +48,13 @@ class SignUpScreen extends Component{
                     .then( () => {
                         this.props.navigation.navigate('Login')
                     })
+            })
+            .catch(error => {
+                // console.warn(error)
+                // this.setState({ errorMessage: JSON.stringify(error) })
+                if(error.code == 'auth/email-already-in-use'){
+                    this.setState({ emailInUseError: true })
+                }
             })
         }
     }
@@ -77,6 +90,9 @@ class SignUpScreen extends Component{
                             style={styles.inputField}
                             onChangeText={text => this.handleChange( 'email', text )}
                         />
+                        {
+                            this.state.emailInputError ? <Text>Please input right email</Text> : <Text></Text>
+                        }
                         <TextInput
                             placeholder='Password'
                             underlineColorAndroid='#207561'
@@ -85,19 +101,20 @@ class SignUpScreen extends Component{
                             style={styles.inputField}
                             onChangeText={text => this.handleChange( 'password', text )}
                         />
-                        <TextInput 
-                            placeholder='Photo (Url)'
-                            underlineColorAndroid='#207561'
-                            placeholderTextColor='#e3dac9'
-                            style={styles.inputField}
-                            onChangeText={text => this.handleChange( 'photo', text )}
-                        />
+                        {
+                            this.state.passwordInputError ? <Text>Password must be</Text> : <Text></Text>
+                        }
                     </View>
                     <View style={{alignItems: 'flex-end'}}>
                         <Button style={styles.SignUpButton} dark title='SignUp' onPress={() => this.handleSubmit()} >
                             <Text style={{color:'white'}}>Sign Up</Text>
                         </Button>
                     </View>
+                </View>
+                <View>
+                    {
+                        this.state.emailInUseError ? <Text>Email is already registered! Try to login.</Text> : <Text></Text>
+                    }
                 </View>
                 <View style={styles.footerWrapper}>
                     <View style={{marginRight: 120}}>

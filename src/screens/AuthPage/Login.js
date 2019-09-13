@@ -79,6 +79,11 @@ class LoginScreen extends Component{
                             style={styles.inputField}
                             onChangeText={(text) => this.handleChange( 'password', text )}
                         />
+                        {
+                            this.state.invalidEmailError ? <Text>Please input right email!</Text> :
+                            this.state.wrongPasswordError ? <Text>Email/Password is wrong!</Text> :
+                            this.state.userNotFoundError ? <Text>User doesn't exist! please register first!</Text> : <Text></Text>
+                        }
                     </View>
                     <View style={{alignItems: 'center'}}>
                         <Button style={styles.SignInButton} dark title='Login' onPress={() => this.handleSubmit()} >
@@ -86,14 +91,6 @@ class LoginScreen extends Component{
                         </Button>
                     </View>
                     
-                </View>
-                <View>
-                    {
-                        
-                        this.state.invalidEmailError ? <Text>Please input email formated</Text> :
-                        this.state.wrongPasswordError ? <Text>Email/Password is wrong!</Text> :
-                        this.state.userNotFoundError ? <Text>User doesn't exist! please register first!</Text> : <Text></Text>
-                    }
                 </View>
                 <View style={styles.footerWrapper}>
                     <View style={{marginRight: 120}}>
