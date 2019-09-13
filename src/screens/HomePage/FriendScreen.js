@@ -33,7 +33,7 @@ class FriendScreen extends Component {
     _renderRow = ({item}) => {
         if (item.uid != this.state.uid ){
             return (
-                <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('', {item: item}) }>
+                <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('FriendProfile', {item: item}) }>
                     <Image source={{uri: item.photo}} style={styles.friendImage} />
                     <View style={{paddingLeft: 10 }}>
                         <Text style={styles.friendName}>{item.fullname}</Text>
@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0,
     },
     inputContainer: {
-        backgroundColor: '#E5E6EE'
+        backgroundColor: '#E5E6EE',
+        marginBottom: 17,
     },
     friendListContainer: {
         padding: 10,
