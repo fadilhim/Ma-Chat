@@ -42,15 +42,23 @@ class HomeScreen extends Component {
         } else {
             Geolocation.getCurrentPosition(
                 (position) => {
-                    console.warn(position);
+                    let userPosition = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    }
+                    firebase.database().ref('users/' + this.state.uid).update({ position: userPosition })
                 },
                 (error) => {
                     // See error code charts below.
                     console.warn(error.code, error.message);
                 },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+                { enableHighAccuracy: true, timeout: 15000, forceRequestLocation: true, maximumAge: 10000 }
             )
         }
+    }
+
+    componentWillUnmount = () => {
+        Geolocation.stopObserving()
     }
 
     requestLocationPermission = async () => {
@@ -64,7 +72,6 @@ class HomeScreen extends Component {
                     buttonNeutral: 'Ask Me Later',
                     buttonPositive: 'OK',
                     buttonNegative: 'Cancel',
-
                 },
             );
             return granted === PermissionsAndroid.RESULTS.GRANTED
@@ -88,12 +95,14 @@ class HomeScreen extends Component {
                 </TouchableOpacity>
             )
         }
-
     }
 
     render() {
         return(
             <SafeAreaView style={{backgroundColor: '#353839', flex: 1}}>
+                <View style={{height: '7%', backgroundColor: '#353839', justifyContent: 'center', marginBottom: 2, marginTop: 7}}>
+                    <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Chats</Text>
+                </View>
                 <FlatList 
                     data={this.state.users}
                     renderItem={this._renderRow}

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image, StyleSheet } from 'react-native'
+import { SearchBar } from 'react-native-elements'
 import firebase from 'firebase'
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -53,6 +54,20 @@ class FriendScreen extends Component {
     render() {
         return(
             <SafeAreaView style={styles.container}>
+                <View style={{height: '7%', backgroundColor: '#353839', justifyContent: 'center', marginBottom: 3, marginTop: 7}}>
+                    <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Friends</Text>
+                </View>
+                {/* <View> */}
+                    <SearchBar
+                        placeholder= 'Search...'
+                        placeholderTextColor= 'grey'
+                        // onChangeText={this.updateSearch}
+                        // value={search}
+                        round={true}
+                        containerStyle={styles.searchInput}
+                        inputContainerStyle={styles.inputContainer}
+                    />
+                {/* </View> */}
                 <FlatList 
                     data={this.state.users}
                     renderItem={this._renderRow}
@@ -67,6 +82,19 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#353839',
         flex: 1,
+    },
+    searchInput: {
+        backgroundColor: 'transparent',
+        marginLeft: 5,
+        marginRight: 10,
+        marginBottom: 20,
+        width: '100%',
+        height: 15,
+        borderTopWidth: 0,
+        borderBottomWidth: 0,
+    },
+    inputContainer: {
+        backgroundColor: '#E5E6EE'
     },
     friendListContainer: {
         padding: 10,

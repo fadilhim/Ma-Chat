@@ -4,20 +4,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
 
-class ProfileScreen extends Component {
-
-    _logOut = async () => {
-        await AsyncStorage.getItem('uid')
-            .then( async (uid) => {
-                firebase.database().ref('users/' + uid).update({ status: 'offline' })
-                await AsyncStorage.clear()
-                firebase.auth().signOut()
-                this.props.navigation.navigate('Login')
-            })
-            .catch(function(error) {
-                console.error(error)
-            })
-    }
+class FriendProfileScreen extends Component {
 
     render() {
         return (
@@ -61,4 +48,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ProfileScreen;
+export default FriendProfileScreen;
