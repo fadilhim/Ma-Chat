@@ -2,13 +2,28 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import { Icon } from 'native-base'
+import Geocoder from 'react-native-geocoder'
 
 class ProfileScreen extends Component {
     constructor(props){
         super(props)
         this.state= {
             friendProfile : props.navigation.getParam('item'),
+            userAddress: ''
         }
+    }
+
+    componentDidMount = () => {
+        Geocoder.geocodePosition({
+            lat: this.state.friendProfile.position.latitude,
+            lng: this.state.friendProfile.position.longitude
+        })
+        .then(res => {
+            this.setState({
+                userAddress: res[0].formattedAddress
+            })
+        })
+        .catch(err => console.log(err))
     }
 
     render() {
