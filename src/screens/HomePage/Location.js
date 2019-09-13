@@ -57,7 +57,7 @@ class LocationScreen extends Component {
                 }}
                 zoomControlEnabled={true}
                 showsUserLocation={true}
-                followsUserLocation={true}
+                followUserLocation={true}
             >
             {userList.map( (user) => (
                 user.uid == this.state.userUid ?
