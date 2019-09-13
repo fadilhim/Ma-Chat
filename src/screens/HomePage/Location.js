@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
@@ -43,7 +43,6 @@ class LocationScreen extends Component {
 
     render() {
         const userList = this.state.users
-        console.warn(this.state.userPosition.latitude)
 
         return (
         <View style={styles.viewStyles}>
@@ -68,7 +67,14 @@ class LocationScreen extends Component {
                             latitude: this.state.userPosition.latitude,
                             longitude: this.state.userPosition.longitude
                         }}
-                    />
+                    >
+                        <View>
+                            <Image 
+                                source={{ uri: user.photo}}
+                                style={{ height: 45, width: 45, borderRadius: 50, borderColor: 'green', borderWidth: 3}}
+                            />
+                        </View>
+                    </Marker>
                 : user.status == 'online' ?
                     <Marker
                         key={user.position.latitude + user.position.longitude}
@@ -76,14 +82,28 @@ class LocationScreen extends Component {
                             latitude: user.position.latitude,
                             longitude: user.position.longitude
                         }}
-                    />
+                    >
+                        <View>
+                            <Image 
+                                source={{ uri: user.photo}}
+                                style={{ height: 45, width: 45, borderRadius: 50, borderColor: 'blue', borderWidth: 3}}
+                            />
+                        </View>
+                    </Marker>
                 :   <Marker
                     key={user.position.latitude + user.position.longitude}
                     coordinate={{ 
                         latitude: user.position.latitude,
                         longitude: user.position.longitude
                     }}
-                />
+                >
+                    <View>
+                        <Image 
+                            source={{ uri: user.photo}}
+                            style={{ height: 45, width: 45, borderRadius: 50, borderColor: 'grey', borderWidth: 3}}
+                        />
+                    </View>
+                </Marker>
             ))}
             </MapView>
         </View>
