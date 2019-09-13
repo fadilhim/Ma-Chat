@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image, Permission
 import firebase from 'firebase'
 import AsyncStorage from '@react-native-community/async-storage'
 import Geolocation from 'react-native-geolocation-service'
+import { Spinner } from 'native-base'
 
 class HomeScreen extends Component {
 
@@ -103,11 +104,15 @@ class HomeScreen extends Component {
                 <View style={{height: '7%', backgroundColor: '#353839', justifyContent: 'center', marginBottom: 2, marginTop: 7}}>
                     <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Chats</Text>
                 </View>
-                <FlatList 
-                    data={this.state.users}
-                    renderItem={this._renderRow}
-                    keyExtractor={ (item) => item.username }
-                />
+                {this.state.users ?
+                    <FlatList 
+                        data={this.state.users}
+                        renderItem={this._renderRow}
+                        keyExtractor={ (item) => item.username }
+                    />
+                    :
+                    <Spinner color='white' />
+                }
             </SafeAreaView>
         )
     }
