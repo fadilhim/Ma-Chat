@@ -40,7 +40,7 @@ class HomeScreen extends Component {
         if(!hasLocationPermission){
             hasLocationPermission = await this.requestLocationPermission()
         } else {
-            Geolocation.getCurrentPosition(
+            Geolocation.watchPosition(
                 (position) => {
                     let userPosition = {
                         latitude: position.coords.latitude,
@@ -55,7 +55,7 @@ class HomeScreen extends Component {
                     // See error code charts below.
                     console.warn(error.code, error.message);
                 },
-                { enableHighAccuracy: true, timeout: 15000, forceRequestLocation: true, maximumAge: 10000 }
+                { enableHighAccuracy: true, timeout: 15000, forceRequestLocation: true, maximumAge: 10000, distanceFilter: 1 }
             )
         }
     }

@@ -64,7 +64,7 @@ class LocationScreen extends Component {
                     <Marker
                         title={user.fullname || null}
                         description={'Last Seen: ' + new Date(user.lastSeen) || null}
-                        key={this.state.userPosition.latitude + this.state.userPosition.longitude}
+                        key={this.state.userPosition}
                         coordinate={{ 
                             latitude: this.state.userPosition.latitude,
                             longitude: this.state.userPosition.longitude
@@ -73,7 +73,7 @@ class LocationScreen extends Component {
                         <View>
                             <Image
                                 title={user.fullname || null}
-                                description={'Last Seen: ' + new Date(user.lastSeen) || null}
+                                description={user.status || null}
                                 source={{ uri: user.photo}}
                                 style={{ height: 45, width: 45, borderRadius: 50, borderColor: '#ffcc00', borderWidth: 3}}
                             />
@@ -82,7 +82,7 @@ class LocationScreen extends Component {
                 : user.status == 'online' ?
                     <Marker
                         title={user.fullname || null}
-                        description={'Last Seen: ' + new Date(user.lastSeen) || null}
+                        description={user.status || null}
                         key={user.position.latitude + user.position.longitude}
                         coordinate={{ 
                             latitude: user.position.latitude,

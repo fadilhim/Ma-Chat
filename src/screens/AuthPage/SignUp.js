@@ -113,7 +113,7 @@ class SignUpScreen extends Component{
                             onChangeText={text => this.handleChange( 'password', text )}
                         />
                         {
-                            this.state.passwordInputError ? <Text>Password must contain uppercase,lowercase and 8 length</Text> : <Text></Text>
+                            this.state.passwordInputError ? <Text>Password must contain uppercase, lowercase {'\n'} and min 8 character!</Text> : <Text></Text>
                         }
                     </View>
                     <View style={{alignItems: 'flex-end'}}>
