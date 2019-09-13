@@ -9,18 +9,18 @@ class LocationScreen extends Component {
     constructor(props){
         super(props)
         this.state= {
-            // currentUser: firebase.auth().currentUser,
-            userPosition: {}
+            userPosition: false,
         }
     }
 
     componentDidMount = async () => {
         await AsyncStorage.getItem('uid').then(
-            (uid) => {
-                firebase.database().ref('users/' + uid + '/position').once('value').then(
+            async (uid) => {
+                await firebase.database().ref('users/' + uid + '/position').once('value').then(
                     (value) => {
-                        this.setState({userPosition: value},()=>this.forceUpdate())
-                        console.warn(typeof value.latitude)
+                        this.setState( {userPosition: value} )
+                        console.warn(value, 'res')
+                        console.warn(this.state.userPosition, 'state')
                     }
                 )
             }
@@ -29,6 +29,7 @@ class LocationScreen extends Component {
 
     render() {
         console.warn(this.state.userPosition, 'position')
+        console.warn(this.state.userPosition.latitude, 'positionLatitude')
         return (
         <View style={styles.viewStyles}>
             <MapView
@@ -46,8 +47,10 @@ class LocationScreen extends Component {
             >
                 {/* <Marker
                     key={this.state.userPosition.latitude + this.state.userPosition.longitude}
-                    // coordinate={{ latitude: this.state.userPosition.latitude || 0, longitude: this.state.userPosition.longitude || 0 }}
-                    // coordinate={this.state.userPosition}
+                    coordinate={{ 
+                        latitude: Number(this.state.userPosition.latitude),
+                        longitude: Number(this.state.userPosition.longitude)
+                    }}
                 /> */}
             </MapView>
         </View>

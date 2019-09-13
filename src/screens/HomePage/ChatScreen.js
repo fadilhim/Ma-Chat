@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
 import firebase from 'firebase'
+import { View, Text } from 'react-native'
 import { GiftedChat } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -60,17 +61,22 @@ class ChatScreen extends Component {
 
     render() {
         return(
-            <GiftedChat 
-                text={this.state.textMessage}
-                messages={this.state.messageList}
-                onSend={this.handleSubmit}
-                user={{
-                    _id: this.state.uid,
-                    name: this.state.name,
-                    avatar: this.state.photo,
-                }}
-                onInputTextChanged={result => this.setState({textMessage: result})}
-            />
+            <View style={{flex: 1}}>
+                <View style={{height: '7%', backgroundColor: '#353839', alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>{this.state.idReceiver.fullname}</Text>
+                </View>
+                <GiftedChat 
+                    text={this.state.textMessage}
+                    messages={this.state.messageList}
+                    onSend={this.handleSubmit}
+                    user={{
+                        _id: this.state.uid,
+                        name: this.state.name,
+                        avatar: this.state.photo,
+                    }}
+                    onInputTextChanged={result => this.setState({textMessage: result})}
+                />
+            </View>
         )
     }
 }

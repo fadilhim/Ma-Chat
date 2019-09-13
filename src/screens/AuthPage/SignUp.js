@@ -28,13 +28,24 @@ class SignUpScreen extends Component{
         })
     }
 
+    emailRegex = (email) => {
+        //One or more after '@' and minimum domain 2 character
+        let emailRegex = /^[\d\w\._-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/
+        return emailRegex.test(email)
+    }
+    passwordRegex = (password) => {
+        // Combination of Uppercase, Lowercase, and have 8 length
+        let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9\W\_]{8,}$/
+        return passwordRegex.test(password)
+    }
+
     handleSubmit = async() => {
-        if ( this.state.SignUpForm.email.length < 10 ) {
+        if ( !this.emailRegex(this.state.SignUpForm.email) ) {
             this.setState({
                 emailInputError: true
             })
         }
-        if ( this.state.SignUpForm.password.length < 3 ) {
+        if ( !this.passwordRegex(this.state.SignUpForm.password.length) ) {
             this.setState({
                 passwordInputError: true
             })
@@ -102,7 +113,7 @@ class SignUpScreen extends Component{
                             onChangeText={text => this.handleChange( 'password', text )}
                         />
                         {
-                            this.state.passwordInputError ? <Text>Password must be</Text> : <Text></Text>
+                            this.state.passwordInputError ? <Text>Password must contain uppercase,lowercase and 8 length</Text> : <Text></Text>
                         }
                     </View>
                     <View style={{alignItems: 'flex-end'}}>

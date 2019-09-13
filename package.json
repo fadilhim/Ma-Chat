@@ -11,6 +11,7 @@
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/geolocation": "^2.0.2",
     "firebase": "^6.6.0",
+    "geocoder": "^0.2.3",
     "native-base": "^2.13.7",
     "react": "16.8.6",
     "react-native": "0.60.5",
