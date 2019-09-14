@@ -21,6 +21,7 @@ import ProfileScreen from '../screens/HomePage/Profile'
 import LocationScreen from '../screens/HomePage/Location'
 import ChatScreen from '../screens/HomePage/ChatScreen'
 import FriendProfile from '../screens/HomePage/FriendProfile'
+import UserProfile from '../screens/HomePage/UserProfile'
 
 const HomeTabNavigator = createBottomTabNavigator(
     {
@@ -77,6 +78,7 @@ const HomePage = createStackNavigator(
         Home: { screen: HomeTabNavigator },
         Chat: { screen: ChatScreen },
         FriendProfile : { screen: FriendProfile },
+        UserProfile: { screen: UserProfile },
     },{
         headerMode: "none",
     }

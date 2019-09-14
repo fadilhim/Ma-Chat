@@ -78,7 +78,7 @@ class FriendScreen extends Component {
                         containerStyle={styles.searchInput}
                         inputContainerStyle={styles.inputContainer}
                     />
-                    <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('FriendProfile', {item: item}) } activeOpacity={0.5}>
+                    <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('UserProfile', {item: currentUser}) } activeOpacity={0.5}>
                         <Image source={{uri: currentUser.photo}} style={styles.userImage} />
                         <View style={{paddingLeft: 10, paddingTop: 10 }}>
                             <Text style={styles.friendName}>{currentUser.fullname}</Text>
@@ -87,14 +87,16 @@ class FriendScreen extends Component {
                             </View>
                         </View>
                     </TouchableOpacity>
-                    <View style={{ height: 27, justifyContent: 'space-between', flexDirection: 'row', alignContent: 'center'}}>
-                        <Text style={{fontSize: 15, color: 'grey', paddingLeft: 11,}}>Friends {this.state.users.length - 1}</Text>
-                        { !this.state.friendDropdown ? 
-                            <Icon type='Ionicons' name='ios-arrow-down' style={{ color: 'grey', fontSize: 18, paddingRight: 11}} />
-                            :
-                            <Icon type='Ionicons' name='ios-arrow-up' style={{ color: 'grey', fontSize: 18, paddingRight: 11}} />
-                        }
-                    </View>
+                    <TouchableOpacity activeOpacity={1} onPress={ () => {this.setState({ friendDropdown: !this.state.friendDropdown })}}>
+                        <View style={{ height: 27, justifyContent: 'space-between', flexDirection: 'row', alignContent: 'center'}}>
+                            <Text style={{fontSize: 15, color: 'grey', paddingLeft: 11,}}>Friends {this.state.users.length - 1}</Text>
+                            { !this.state.friendDropdown ? 
+                                <Icon type='Ionicons' name='ios-arrow-down' style={{ color: 'grey', fontSize: 18, paddingRight: 11}} />
+                                :
+                                <Icon type='Ionicons' name='ios-arrow-up' style={{ color: 'grey', fontSize: 18, paddingRight: 11}} />
+                            }
+                        </View>
+                    </TouchableOpacity>
                     {this.state.friendDropdown ?
                         <FlatList 
                             data={this.state.users}
