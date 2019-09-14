@@ -55,7 +55,7 @@ class FriendScreen extends Component {
         return(
             <SafeAreaView style={styles.container}>
                 <View style={{height: '7%', backgroundColor: '#353839', justifyContent: 'center', marginBottom: 3, marginTop: 7}}>
-                    <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Friends</Text>
+                    <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Friends {this.state.users.length}</Text>
                 </View>
                 {/* <View> */}
                     <SearchBar

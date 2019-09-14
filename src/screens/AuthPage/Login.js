@@ -5,6 +5,7 @@ import { View, Text,TouchableOpacity, StyleSheet, TextInput, Alert } from 'react
 import { Button, Toast } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
+import * as Animatable from 'react-native-animatable'
 
 class LoginScreen extends Component{
     constructor(props) {
