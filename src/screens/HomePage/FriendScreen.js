@@ -4,12 +4,16 @@ import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image, StyleSheet
 import { SearchBar } from 'react-native-elements'
 import firebase from 'firebase'
 import AsyncStorage from '@react-native-community/async-storage'
+import { ScrollView } from 'react-native-gesture-handler';
+import { Icon } from 'native-base';
 
 class FriendScreen extends Component {
 
     state = {
         users: [],
-        uid: ''
+        currentUser: {},
+        uid: '',
+        friendDropdown: true,
     }
 
     UNSAFE_componentWillMount = async () => {
@@ -18,6 +22,13 @@ class FriendScreen extends Component {
                 uid: uid
             })
         )
+
+        firebase.database().ref('users/' + this.state.uid).once('value', (value) => {
+            this.setState({
+                currentUser: value.val()
+            })
+        })
+
         let dbRef = firebase.database().ref('users')
         await dbRef.on('child_added', ( value ) => {
             let person = value.val()
@@ -33,7 +44,7 @@ class FriendScreen extends Component {
     _renderRow = ({item}) => {
         if (item.uid != this.state.uid ){
             return (
-                <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('FriendProfile', {item: item}) }>
+                <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('FriendProfile', {item: item}) } activeOpacity={0.5}>
                     <Image source={{uri: item.photo}} style={styles.friendImage} />
                     <View style={{paddingLeft: 10 }}>
                         <Text style={styles.friendName}>{item.fullname}</Text>
@@ -52,27 +63,48 @@ class FriendScreen extends Component {
     }
 
     render() {
+        let currentUser = this.state.currentUser
         return(
             <SafeAreaView style={styles.container}>
-                <View style={{height: '7%', backgroundColor: '#353839', justifyContent: 'center', marginBottom: 3, marginTop: 7}}>
-                    <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Friends {this.state.users.length}</Text>
+                <View style={{height: 52, backgroundColor: '#353839', justifyContent: 'center'}}>
+                    <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Friends {this.state.users.length - 1}</Text>
                 </View>
-                {/* <View> */}
+                <ScrollView>
                     <SearchBar
-                        placeholder= 'Search...'
+                        placeholder= 'Search'
                         placeholderTextColor= 'grey'
                         // onChangeText={this.updateSearch}
                         // value={search}
-                        round={true}
                         containerStyle={styles.searchInput}
                         inputContainerStyle={styles.inputContainer}
                     />
-                {/* </View> */}
-                <FlatList 
-                    data={this.state.users}
-                    renderItem={this._renderRow}
-                    keyExtractor={ (item) => item.username }
-                />
+                    <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('FriendProfile', {item: item}) } activeOpacity={0.5}>
+                        <Image source={{uri: currentUser.photo}} style={styles.userImage} />
+                        <View style={{paddingLeft: 10, paddingTop: 10 }}>
+                            <Text style={styles.friendName}>{currentUser.fullname}</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={{ height: 27, justifyContent: 'space-between', flexDirection: 'row', alignContent: 'center'}}>
+                        <Text style={{fontSize: 15, color: 'grey', paddingLeft: 11,}}>Friends {this.state.users.length - 1}</Text>
+                        { !this.state.friendDropdown ? 
+                            <Icon type='Ionicons' name='ios-arrow-down' style={{ color: 'grey', fontSize: 18, paddingRight: 11}} />
+                            :
+                            <Icon type='Ionicons' name='ios-arrow-up' style={{ color: 'grey', fontSize: 18, paddingRight: 11}} />
+                        }
+                    </View>
+                    {this.state.friendDropdown ?
+                        <FlatList 
+                            data={this.state.users}
+                            renderItem={this._renderRow}
+                            keyExtractor={ (item) => item.username }
+                        />
+                        :
+                        <Text></Text>
+                    }
+                </ScrollView>
             </SafeAreaView>
         )
     }
@@ -82,24 +114,30 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#353839',
         flex: 1,
+        flexDirection: 'column'
     },
     searchInput: {
         backgroundColor: 'transparent',
-        marginLeft: 5,
-        marginRight: 10,
-        marginBottom: 20,
         width: '100%',
-        height: 15,
+        height: 40,
         borderTopWidth: 0,
         borderBottomWidth: 0,
+        marginBottom: 10,
     },
     inputContainer: {
-        backgroundColor: '#E5E6EE',
-        marginBottom: 17,
+        backgroundColor: '#E5E6EE20',
+        height: 31,
     },
     friendListContainer: {
-        padding: 10,
-        flexDirection: 'row'
+        // padding: 10,
+        paddingBottom: 15,
+        paddingLeft: 10,
+        flexDirection: 'row',
+    },
+    userImage: {
+        height: 60,
+        width: 60,
+        borderRadius: 50
     },
     friendImage: {
         height: 50,
@@ -107,23 +145,23 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     friendName: {
-        fontSize: 20,
+        fontSize: 15,
         color: 'white',
     },
     friendOnline: {
-        height: 10,
-        width: 10,
+        height: 7,
+        width: 7,
         backgroundColor: '#207561',
         borderRadius: 50,
     },
     friendOffline: {
-        height: 10,
-        width: 10,
+        height: 7,
+        width: 7,
         backgroundColor: 'grey',
         borderRadius: 50,
     },
     friendStatus: {
-        fontSize: 15,
+        fontSize: 12,
         color: 'grey',
         paddingLeft: 5,
     },

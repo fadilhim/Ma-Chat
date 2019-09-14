@@ -28,7 +28,7 @@ const HomeTabNavigator = createBottomTabNavigator(
             screen: FriendScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (  
-                <Icon type="FontAwesome5" name="user-friends" style={{fontSize:25 , color:`${tintColor}`}} />
+                <Icon type="FontAwesome5" name="user-friends" style={{fontSize:22 , color:`${tintColor}`}} />
                 ),
                 title: 'Friends'
             },
@@ -37,7 +37,7 @@ const HomeTabNavigator = createBottomTabNavigator(
             screen: HomeScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (  
-                <Icon type="MaterialCommunityIcons" name="chat" style={{fontSize:25 , color:`${tintColor}`}} />
+                <Icon type="MaterialCommunityIcons" name="chat" style={{fontSize:22 , color:`${tintColor}`}} />
                 ),
                 title: 'Chats'
             },
@@ -46,7 +46,7 @@ const HomeTabNavigator = createBottomTabNavigator(
             screen: LocationScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                <Icon type="MaterialIcons" name="location-on" style={{fontSize:25, color:`${tintColor}`}}/>
+                <Icon type="MaterialIcons" name="location-on" style={{fontSize:22, color:`${tintColor}`}}/>
                 ),
                 title: 'Location'
             },
@@ -55,7 +55,7 @@ const HomeTabNavigator = createBottomTabNavigator(
             screen: ProfileScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                <Icon type="FontAwesome5" name="user" style={{fontSize:25, color:`${tintColor}`}}/>
+                <Icon type="FontAwesome5" name="user" style={{fontSize:22, color:`${tintColor}`}}/>
                 ),
                 title: 'Profile'
             },

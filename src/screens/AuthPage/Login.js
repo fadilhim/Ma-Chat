@@ -27,31 +27,25 @@ class LoginScreen extends Component{
     }
 
     handleSubmit = async () => {
-        // if ( this.state.email.length < 10 ) {
-        //     Alert.alert('Error', 'email !')
-        // } else if ( this.state.password.length < 3 ) {
-        //     Alert.alert('Error', 'Wrong password')
-        // } else {
-            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-                .then( async (result) =>{
-                    await firebase.database().ref('users/' + result.user.uid).update({ status: 'online' })
-                    AsyncStorage.setItem('uid', result.user.uid)
-                    AsyncStorage.setItem('name', result.user.displayName)
-                    AsyncStorage.setItem('image', result.user.image)
-                    this.props.navigation.navigate('Tabs')
-                })
-                .catch(error => {
-                    console.log(error)
-                    // this.setState({ errorMessage: JSON.stringify(error) })
-                    if(error.code == 'auth/invalid-email'){
-                        this.setState({ invalidEmailError: true })
-                    } else if(error.code == 'auth/user-not-found'){
-                        this.setState({ userNotFoundError: true })
-                    } else if(error.code == 'auth/wrong-password'){
-                        this.setState({ wrongPasswordError: true })
-                    }
-                })
-        // }
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then( async (result) =>{
+                await firebase.database().ref('users/' + result.user.uid).update({ status: 'online' })
+                AsyncStorage.setItem('uid', result.user.uid)
+                AsyncStorage.setItem('name', result.user.displayName)
+                AsyncStorage.setItem('image', result.user.image)
+                this.props.navigation.navigate('Tabs')
+            })
+            .catch(error => {
+                console.log(error)
+                // this.setState({ errorMessage: JSON.stringify(error) })
+                if(error.code == 'auth/invalid-email'){
+                    this.setState({ invalidEmailError: true })
+                } else if(error.code == 'auth/user-not-found'){
+                    this.setState({ userNotFoundError: true })
+                } else if(error.code == 'auth/wrong-password'){
+                    this.setState({ wrongPasswordError: true })
+                }
+            })
     }
 
     render() {

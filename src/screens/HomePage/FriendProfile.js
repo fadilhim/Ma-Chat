@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import { Icon } from 'native-base'
 import Geocoder from 'react-native-geocoder'
+import { ScrollView } from 'react-native-gesture-handler';
 
 class ProfileScreen extends Component {
     constructor(props){
@@ -30,36 +31,47 @@ class ProfileScreen extends Component {
         console.log(this.state.friendProfile)
         let user = this.state.friendProfile
         return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.profileLabel}>{user.fullname}</Text>
-                    <Image style={styles.avatar} source={{uri: user.photo }}></Image>
-                    <TouchableOpacity onPress={ () => this.props.navigation.navigate('Chat', {item: user}) } style={styles.logOutButton}>
-                        <Text style={{color: '#696969', fontWeight: 'bold'}}>Chat</Text>
-                    </TouchableOpacity>
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Image style={styles.avatar} source={{uri: user.photo }}></Image>
+                        <Text style={styles.profileLabel}>{user.fullname}</Text>
+                    </View>
+                    <View style={styles.body}>
+                        <View style={{borderBottomWidth: 0.6, borderBottomColor: '#35383930', flexDirection: 'row', height: 80, justifyContent: 'space-around', alignItems: 'center'}}>
+                            <View style={{ justifyContent: 'center' }}>
+                                <Icon type="MaterialCommunityIcons" name="chat" style={{fontSize:35 , color: 'grey'}} />
+                                <Text style={{ color: 'grey', fontSize: 12}}>Chat</Text>
+                            </View>
+                            <View style={{ alignItems: 'center' }}>
+                                <Icon type="MaterialIcons" name="location-on" style={{fontSize:35, color: 'grey'}}/>
+                                <Text style={{ color: 'grey', fontSize: 12}}>Location</Text>
+                            </View>
+                            {/* <TouchableOpacity onPress={ () => this.props.navigation.navigate('Chat', {item: user}) } style={styles.logOutButton}>
+                                <Text style={{color: '#696969', fontWeight: 'bold'}}>Chat</Text>
+                            </TouchableOpacity> */}
+                        </View>
+                        <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
+                            <Icon type='MaterialCommunityIcons' name='gmail' style={{fontSize: 37, color: '#353839'}}/>
+                            <Text style={{alignSelf: 'center', paddingLeft: 9}}>{user.email}</Text>
+                        </View>
+                        <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
+                            <Icon type='Entypo' name='location-pin' style={{fontSize: 37, color: '#353839'}}/>
+                            <Text style={{alignSelf: 'center', paddingLeft: 7}}>{this.state.userAddress}</Text>
+                        </View>
+                        <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
+                            <Icon type='Entypo' name='eye' style={{fontSize: 33, color: '#353839'}}/>
+                            <Text style={{alignSelf: 'center', paddingLeft: 9}}>{ new Date(user.lastSeen) + '' }</Text>
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.body}>
-                    <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
-                        <Icon type='MaterialCommunityIcons' name='gmail' style={{fontSize: 37, color: '#353839'}}/>
-                        <Text style={{alignSelf: 'center', paddingLeft: 9}}>{user.email}</Text>
-                    </View>
-                    <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
-                        <Icon type='Entypo' name='location-pin' style={{fontSize: 37, color: '#353839'}}/>
-                        <Text style={{alignSelf: 'center', paddingLeft: 7}}>{this.state.userAddress}</Text>
-                    </View>
-                    <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
-                        <Icon type='Entypo' name='eye' style={{fontSize: 33, color: '#353839'}}/>
-                        <Text style={{alignSelf: 'center', paddingLeft: 9}}>{ new Date(user.lastSeen) + '' }</Text>
-                    </View>
-                </View>
-            </View>
+            </ScrollView>
         )
     }
 }
 
 const styles = StyleSheet.create({
     logOutButton: {
-        marginTop: 160,
         marginLeft: 80,
         height: 45,
         width: 50,
@@ -69,13 +81,13 @@ const styles = StyleSheet.create({
         marginBottom:20,
         width:250,
         borderRadius:20 ,
-        backgroundColor: "white",
+        backgroundColor: "grey",
     },
     profileLabel:{
         fontSize:20,
         fontWeight: 'bold',
         color: "white",
-        marginTop: 35,
+        marginTop: 465,
         textAlign: 'center'
     },
     container: {
@@ -83,18 +95,15 @@ const styles = StyleSheet.create({
     },
     header: {
         backgroundColor: "#353839",
-        height:300,
+        height: 530,
     },
     avatar: {
-        width: 130,
-        height: 130,
+        width: 100,
+        height: 100,
         borderRadius: 63,
-        borderWidth: 4,
-        borderColor: "white",
-        marginBottom:10,
         alignSelf:'center',
         position: 'absolute',
-        marginTop:70
+        marginTop: 358
     },
     body:{
         // marginTop:40,

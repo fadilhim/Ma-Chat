@@ -3,15 +3,13 @@ import React, { Component } from 'react'
 import { View, Text,TouchableOpacity, StyleSheet, TextInput } from 'react-native'
 import { Button, Toast } from 'native-base'
 import firebase from 'firebase'
-// import AsyncStorage from '@react-native-community/async-storage'
-// import Icon from 'react-native-vector-icons/FontAwesome'
 
 class SignUpScreen extends Component{
     constructor(props) {
         super(props)
         this.state = {
             SignUpForm: {
-                photo: 'https://previews.123rf.com/images/triken/triken1608/triken160800029/61320775-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration-i.jpg'
+                photo: 'https://www.goombastomp.com/wp-content/uploads/2016/02/Yellow-Pokemon-Wallpaper.jpg'
             },
             errorMessage: null,
             emailInUseError: false,
