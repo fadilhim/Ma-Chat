@@ -9,7 +9,8 @@ class SignUpScreen extends Component{
         super(props)
         this.state = {
             SignUpForm: {
-                photo: 'https://www.goombastomp.com/wp-content/uploads/2016/02/Yellow-Pokemon-Wallpaper.jpg'
+                photo: 'https://www.goombastomp.com/wp-content/uploads/2016/02/Yellow-Pokemon-Wallpaper.jpg',
+                header: 'https://i.pinimg.com/564x/b7/e1/8c/b7e18c4d7e8b6b6a90b3603fd6c14bec.jpg'
             },
             errorMessage: null,
             emailInUseError: false,
@@ -89,7 +90,7 @@ class SignUpScreen extends Component{
                             onChangeText={text => this.handleChange( 'fullname', text )}
                         />
                         <TextInput 
-                            placeholder='Username'
+                            placeholder='ID'
                             underlineColorAndroid='#207561'
                             placeholderTextColor='#e3dac9'
                             style={styles.inputField}

@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
 import Geocoder from 'react-native-geocoder'
 import { Icon } from 'native-base'
+import { ScrollView } from 'react-native-gesture-handler';
 
 class ProfileScreen extends Component {
     constructor(){
@@ -55,26 +56,37 @@ class ProfileScreen extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.profileLabel}>{user.fullname}</Text>
+                <ImageBackground source={{ uri: user.header }} style={{ width: '100%', height: 250, }}>
                     <Image style={styles.avatar} source={{uri: user.photo }}></Image>
-                    <TouchableOpacity onPress={ () => this._logOut()} style={styles.logOutButton}>
-                        <Text style={{color: '#696969', fontWeight: 'bold'}}>Log Out</Text>
+                </ImageBackground>
+                </View>
+                <ScrollView style={styles.body}>
+                {/* <View style={styles.body}> */}
+                    <TouchableOpacity style={{paddingLeft: 20, paddingTop: 7, paddingBottom: 7, borderBottomWidth: 0.6, borderBottomColor: '#35383930', }} activeOpacity={0.6}>
+                        <Text style={{ paddingLeft: 9}}>Display name</Text>
+                        <Text style={{ paddingLeft: 9, color: 'blue'}}>{user.fullname}</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.body}>
-                    <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
-                        <Icon type='MaterialCommunityIcons' name='gmail' style={{fontSize: 37, color: '#353839'}}/>
-                        <Text style={{alignSelf: 'center', paddingLeft: 9}}>{user.email}</Text>
-                    </View>
-                    <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
-                        <Icon type='Entypo' name='location-pin' style={{fontSize: 37, color: '#353839'}}/>
-                        <Text style={{alignSelf: 'center', paddingLeft: 7}}>{this.state.userAddress}</Text>
-                    </View>
-                    <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
-                        <Icon type='Entypo' name='eye' style={{fontSize: 33, color: '#353839'}}/>
-                        <Text style={{alignSelf: 'center', paddingLeft: 9}}>{ new Date(user.lastSeen) + '' }</Text>
-                    </View>
-                </View>
+                    <TouchableOpacity style={{paddingLeft: 20, paddingTop: 7, paddingBottom: 7, borderBottomWidth: 0.6, borderBottomColor: '#35383930', }} activeOpacity={0.6}>
+                        <Text style={{ paddingLeft: 9}}>Status message</Text>
+                        <Text style={{ paddingLeft: 9, color: 'blue'}}>{user.fullname? 'Not Set' : user.fullname}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{paddingLeft: 20, paddingTop: 7, paddingBottom: 7, borderBottomWidth: 0.6, borderBottomColor: '#35383930',}} activeOpacity={0.6}>
+                        <Text style={{ paddingLeft: 9}}>Email</Text>
+                        <Text style={{ paddingLeft: 9, color: 'blue'}}>{user.email}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{paddingLeft: 20, paddingTop: 7, paddingBottom: 7, borderBottomWidth: 0.6, borderBottomColor: '#35383930',}} activeOpacity={1}>
+                        <Text style={{ paddingLeft: 9}}>ID</Text>
+                        <Text style={{ paddingLeft: 9, color: 'blue'}}>{user.username}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{paddingLeft: 20, paddingTop: 7, paddingBottom: 7, borderBottomWidth: 0.6, borderBottomColor: '#35383930',}} activeOpacity={0.6}>
+                        <Text style={{ paddingLeft: 9}}>Birthday</Text>
+                        <Text style={{ paddingLeft: 9, color: 'blue'}}>January 20, 2000</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={ () => this._logOut()} style={styles.logOutButton}>
+                        <Text style={{color: 'white', fontWeight: 'bold'}}>Log Out</Text>
+                    </TouchableOpacity>
+                {/* </View> */}
+                </ScrollView>
             </View>
         )
     }
@@ -82,17 +94,16 @@ class ProfileScreen extends Component {
 
 const styles = StyleSheet.create({
     logOutButton: {
-        marginTop: 160,
-        marginLeft: 80,
+        marginTop: 20,
+        marginLeft: 120,
         height: 45,
         width: 200,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom:20,
-        width:250,
         borderRadius:20 ,
-        backgroundColor: "white",
+        backgroundColor: "#696969",
     },
     profileLabel:{
         fontSize:20,
@@ -106,14 +117,13 @@ const styles = StyleSheet.create({
     },
     header: {
         backgroundColor: "#353839",
-        height:300,
+        height:250,
     },
     avatar: {
         width: 130,
         height: 130,
         borderRadius: 63,
         borderWidth: 4,
-        borderColor: "white",
         marginBottom:10,
         alignSelf:'center',
         position: 'absolute',

@@ -6,11 +6,11 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { createStackNavigator } from 'react-navigation-stack'
 
-//Splash Screen for loading and authentication
+//Splash Screen
 import AuthLoadingScreen from '../screens/AuthPage/AuthLoading'
 import SplashScreen from '../screens/AuthPage/Splash'
 
-//AuthPage
+//AuthPage screen
 import LoginScreen from '../screens/AuthPage/Login'
 import SignUpScreen from '../screens/AuthPage/SignUp'
 
@@ -19,9 +19,12 @@ import HomeScreen from '../screens/HomePage/Home'
 import FriendScreen from '../screens/HomePage/FriendScreen'
 import ProfileScreen from '../screens/HomePage/Profile'
 import LocationScreen from '../screens/HomePage/Location'
-import ChatScreen from '../screens/HomePage/ChatScreen'
-import FriendProfile from '../screens/HomePage/FriendProfile'
-import UserProfile from '../screens/HomePage/UserProfile'
+
+//Dynamic screen
+import ChatScreen from '../screens/DynamicPage/ChatScreen'
+import FriendProfile from '../screens/DynamicPage/FriendProfile'
+import UserProfile from '../screens/DynamicPage/UserProfile'
+import EditScreen from '../screens/DynamicPage/EditScreen'
 
 const HomeTabNavigator = createBottomTabNavigator(
     {
@@ -89,7 +92,8 @@ const AppNavigation = createSwitchNavigator(
         AuthLoading: { screen: AuthLoadingScreen },
         Login: { screen: LoginScreen },
         SignUp: { screen: SignUpScreen },
-        Tabs: { screen: HomePage }
+        Tabs: { screen: HomePage },
+        Edit: { screen: EditScreen },
     }
 )
 

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native'
 import { Icon } from 'native-base'
 import Geocoder from 'react-native-geocoder'
 import { ScrollView } from 'react-native-gesture-handler';
@@ -34,8 +34,10 @@ class UserProfileScreen extends Component {
             <ScrollView>
                 <View style={styles.container}>
                     <View style={styles.header}>
+                    <ImageBackground source={{ uri: user.header }} style={{ height: 530, width: '100%'}} >
                         <Image style={styles.avatar} source={{uri: user.photo }}></Image>
                         <Text style={styles.profileLabel}>{user.fullname}</Text>
+                    </ImageBackground>
                     </View>
                     <View style={styles.body}>
                         <View style={{borderBottomWidth: 0.6, borderBottomColor: '#35383930', height: 80, alignItems: 'center', justifyContent: 'center'}}>
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
         // backgroundColor: '#353839'
     },
     header: {
-        backgroundColor: "#353839",
+        // backgroundColor: "#353839",
         height: 530,
     },
     avatar: {

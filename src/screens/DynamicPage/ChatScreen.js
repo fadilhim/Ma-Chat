@@ -62,7 +62,7 @@ class ChatScreen extends Component {
     render() {
         return(
             <View style={{flex: 1}}>
-                <View style={{height: '7%', backgroundColor: '#353839', alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{height: 52, backgroundColor: '#353839', alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>{this.state.idReceiver.fullname}</Text>
                 </View>
                 <GiftedChat 

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from 'react'
+import { View, Text, Image } from 'react-native'
 
 class SplashScreen extends Component {
     performTimeConsumingTask = async() => {
@@ -23,10 +23,8 @@ class SplashScreen extends Component {
     render() {
         return (
         <View style={styles.viewStyles}>
-            <Text style={styles.textStyles}>
-                MaChat
-            </Text>
-            <Text style={{color: '#d0d0d0'}}>No 1 Messaging App Pogung Baru</Text>
+            <Image source={require('../../assets/MaChat Logo.png')} style={{ width: 270, height: 270}} />
+            <Text style={{color: '#d0d0d0', fontSize: 20, fontWeight: 'bold'}}>MaChat</Text>
         </View>
         );
     }
