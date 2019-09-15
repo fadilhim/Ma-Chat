@@ -7,7 +7,7 @@ class firebaseConfig {
             authDomain: "ma-chat-f90bc.firebaseapp.com",
             databaseURL: "https://ma-chat-f90bc.firebaseio.com",
             projectId: "ma-chat-f90bc",
-            storageBucket: "",
+            storageBucket: "ma-chat-f90bc.appspot.com",
             messagingSenderId: "923623573065",
             appId: "1:923623573065:web:7d673ef4f9fc47699b6198"
         };

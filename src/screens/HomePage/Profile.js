@@ -1,18 +1,19 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, ImageBackground, PermissionsAndroid } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
-import Geocoder from 'react-native-geocoder'
 import { Icon } from 'native-base'
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler'
+import ImagePicker from 'react-native-image-picker'
+import RNFetchBlob from 'rn-fetch-blob'
 
 class ProfileScreen extends Component {
     constructor(){
         super()
         this.state= {
             userProfile: {},
-            userAddress: ''
+            uid: ''
         }
     }
 
@@ -23,19 +24,8 @@ class ProfileScreen extends Component {
             .on('value', (value) => {
                 this.setState( {userProfile: value.val()} )
             })
+            this.setState({uid: uid})
         })
-
-        Geocoder.geocodePosition({
-            lat: this.state.userProfile.position.latitude,
-            lng: this.state.userProfile.position.longitude
-        })
-        .then(res => {
-
-            this.setState({
-                userAddress: res[0].formattedAddress
-            })
-        })
-        .catch(err => console.log(err))
     }
 
     requestCameraPermission = async () => {
@@ -43,21 +33,60 @@ class ProfileScreen extends Component {
             const granted = await PermissionsAndroid.requestMultiple([
                 PermissionsAndroid.PERMISSIONS.CAMERA,
                 PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
             ])
             return granted === PermissionsAndroid.RESULTS.GRANTED
         } catch (err) {
-            console.warn(err);
+            console.log(err);
             return false
         }
     }
+    
 
-    changeHeader = async () => {
+    changeImage = async (type) => {
+        let upp = type == 'header' ? 'header' : 'photo'
+        // console.log(upp)
+        const Blob = RNFetchBlob.polyfill.Blob
+        const fs = RNFetchBlob.fs
+        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+        window.Blob = Blob
+
+        const options = {
+            title: 'Select Avatar',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+            mediaType: 'photo'
+        }
+
         let cameraPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA) && PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE) && PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
         if(!cameraPermission){
             cameraPermission = await this.requestCameraPermission()
         } else {
-            console.warn('sudah ijin')
+            ImagePicker.showImagePicker(options, (response)=> {
+                let uploadBob = null
+                const imageRef = firebase.storage().ref('images/' + this.state.uid).child(upp)
+                fs.readFile(response.path, 'base64')
+                    .then( (data) => {
+                        return Blob.build(data, { type: `${response.mime};BASE64`} )
+                    })
+                    .then( (blob) => {
+                        uploadBob = blob
+                        return imageRef.put(blob, { contentType: `${response.mime}`})
+                    })
+                    .then( () => {
+                        uploadBob.close()
+                        return imageRef.getDownloadURL()
+                    })
+                    .then( (url) => {
+                        upp == 'header' ?
+                        firebase.database().ref('users/' + this.state.uid).update({ header: url})
+                        :
+                        firebase.database().ref('users/' + this.state.uid).update({ photo: url})
+                    })
+                    .catch( (err) => console.log(err))
+            })
         }
     }
 
@@ -82,10 +111,12 @@ class ProfileScreen extends Component {
                 <View style={styles.header}>
                 <ImageBackground source={{ uri: user.header }} style={{ width: '100%', height: 250, resizeMode: 'cover' }}>
                     <Image style={styles.avatar} source={{uri: user.photo }}></Image>
-                    <TouchableOpacity onPress={() => {} } style={{ height: 30, width: 30, backgroundColor:'#00000030', borderRadius: 50, justifyContent: "center", alignItems: 'center', position: 'absolute', left: 233, top: 166}} activeOpacity={0.9} >
+                    {/* Avatar */}
+                    <TouchableOpacity onPress={() => {this.changeImage('photo')} } style={{ height: 30, width: 30, backgroundColor:'#00000030', borderRadius: 50, justifyContent: "center", alignItems: 'center', position: 'absolute', left: 233, top: 166}} activeOpacity={0.9} >
                         <Icon type='Entypo' name='camera' style={{ color: 'white', fontSize: 17}} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {} } style={{ height: 30, width: 30, backgroundColor:'#00000030', borderRadius: 50, justifyContent: "center", alignItems: 'center', position: 'absolute', left: 370, top: 210}} activeOpacity={0.9} >
+                    {/* Header */}
+                    <TouchableOpacity onPress={() => {this.changeImage('header')} } style={{ height: 30, width: 30, backgroundColor:'#00000030', borderRadius: 50, justifyContent: "center", alignItems: 'center', position: 'absolute', left: 370, top: 210}} activeOpacity={0.9} >
                         <Icon type='Entypo' name='camera' style={{ color: 'white', fontSize: 17}} />
                     </TouchableOpacity>
                 </ImageBackground>

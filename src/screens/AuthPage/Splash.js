@@ -23,7 +23,7 @@ class SplashScreen extends Component {
     render() {
         return (
         <View style={styles.viewStyles}>
-            <Image source={require('../../assets/MaChatLogo.png')} style={{ width: 270, height: 270}} />
+            <Image source={require('../../assets/MaChatLogo.png')} style={{ width: 220, height: 220}} />
             <Text style={{color: '#d0d0d0', fontSize: 20, fontWeight: 'bold'}}>MaChat</Text>
         </View>
         );
