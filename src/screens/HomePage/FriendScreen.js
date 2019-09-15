@@ -23,7 +23,8 @@ class FriendScreen extends Component {
             })
         )
 
-        firebase.database().ref('users/' + this.state.uid).once('value', (value) => {
+        firebase.database().ref('users/' + this.state.uid)
+            .on('value', (value) => {
             this.setState({
                 currentUser: value.val()
             })
@@ -46,15 +47,20 @@ class FriendScreen extends Component {
             return (
                 <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('FriendProfile', {item: item}) } activeOpacity={0.5}>
                     <Image source={{uri: item.photo}} style={styles.friendImage} />
-                    <View style={{paddingLeft: 10 }}>
-                        <Text style={styles.friendName}>{item.fullname}</Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            {
-                                item.status == 'online'? 
-                                <View style={styles.friendOnline}></View>:
-                                <View style={styles.friendOffline}></View>
-                            }
-                            <Text style={styles.friendStatus}>{item.status}</Text>
+                    <View style={{paddingLeft: 10}}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', width: 324}}>
+                            <Text style={styles.friendName}>{item.fullname}</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                {
+                                    item.status == 'online'? 
+                                    <View style={styles.friendOnline}></View>:
+                                    <View style={styles.friendOffline}></View>
+                                }
+                                <Text style={styles.friendStatus}>{item.status}</Text>
+                            </View>
+                        </View>
+                        <View>
+                            <Text style={{ color: '#ffffff40', fontSize:12}}>{item.statusmessage}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -83,13 +89,13 @@ class FriendScreen extends Component {
                         <View style={{paddingLeft: 10, paddingTop: 10 }}>
                             <Text style={styles.friendName}>{currentUser.fullname}</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-
+                                <Text style={{ color: '#ffffff40', fontSize:11}}>{currentUser.statusmessage}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={1} onPress={ () => {this.setState({ friendDropdown: !this.state.friendDropdown })}}>
                         <View style={{ height: 27, justifyContent: 'space-between', flexDirection: 'row', alignContent: 'center'}}>
-                            <Text style={{fontSize: 15, color: 'grey', paddingLeft: 11,}}>Friends {this.state.users.length - 1}</Text>
+                            <Text style={{fontSize: 15, color: 'grey', paddingLeft: 12,}}>Friends {this.state.users.length - 1}</Text>
                             { !this.state.friendDropdown ? 
                                 <Icon type='Ionicons' name='ios-arrow-down' style={{ color: 'grey', fontSize: 18, paddingRight: 11}} />
                                 :
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     friendName: {
-        fontSize: 15,
+        fontSize: 13,
         color: 'white',
     },
     friendOnline: {

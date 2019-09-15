@@ -82,6 +82,7 @@ const HomePage = createStackNavigator(
         Chat: { screen: ChatScreen },
         FriendProfile : { screen: FriendProfile },
         UserProfile: { screen: UserProfile },
+        Edit: { screen: EditScreen },
     },{
         headerMode: "none",
     }
@@ -93,7 +94,6 @@ const AppNavigation = createSwitchNavigator(
         Login: { screen: LoginScreen },
         SignUp: { screen: SignUpScreen },
         Tabs: { screen: HomePage },
-        Edit: { screen: EditScreen },
     }
 )
 
