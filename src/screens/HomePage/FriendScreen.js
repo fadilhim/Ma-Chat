@@ -76,14 +76,14 @@ class FriendScreen extends Component {
                     <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Friends {this.state.users.length - 1}</Text>
                 </View>
                 <ScrollView>
-                    <SearchBar
+                    {/* <SearchBar
                         placeholder= 'Search'
                         placeholderTextColor= 'grey'
                         // onChangeText={this.updateSearch}
                         // value={search}
                         containerStyle={styles.searchInput}
                         inputContainerStyle={styles.inputContainer}
-                    />
+                    /> */}
                     <TouchableOpacity style={styles.friendListContainer} onPress={ () => this.props.navigation.navigate('UserProfile', {item: currentUser}) } activeOpacity={0.5}>
                         <Image source={{uri: currentUser.photo}} style={styles.userImage} />
                         <View style={{paddingLeft: 10, paddingTop: 10 }}>

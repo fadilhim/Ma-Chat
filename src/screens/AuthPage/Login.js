@@ -16,7 +16,8 @@ class LoginScreen extends Component{
             errorMessage: null,
             invalidEmailError: false,
             userNotFoundError: false,
-            wrongPasswordError: false
+            wrongPasswordError: false,
+            isLoading: false,
         }
     }
 
@@ -27,6 +28,7 @@ class LoginScreen extends Component{
     }
 
     handleSubmit = async () => {
+        this.setState({isLoading: true})
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .then( async (result) =>{
                 await firebase.database().ref('users/' + result.user.uid).update({ status: 'online' })
@@ -36,6 +38,7 @@ class LoginScreen extends Component{
                 this.props.navigation.navigate('Tabs')
             })
             .catch(error => {
+                this.setState({isLoading: false})
                 console.log(error)
                 // this.setState({ errorMessage: JSON.stringify(error) })
                 if(error.code == 'auth/invalid-email'){
@@ -88,16 +91,17 @@ class LoginScreen extends Component{
                     
                 </View>
                 <View style={styles.footerWrapper}>
-                    <View style={{marginRight: 120}}>
-                        <TouchableOpacity onPress={()=> this.props.navigation.navigate('SignUp')} >
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{color: 'black'}} >Don't have an account? </Text>
+                        <TouchableOpacity onPress={()=> this.props.navigation.navigate('SignUp')} activeOpacity={0.85} >
                             <Text style={styles.text}>Sign Up</Text>
                         </TouchableOpacity>
                     </View>
-                    <View >
+                    {/* <View >
                         <TouchableOpacity onPress={() => {}} >
                             <Text style={styles.text}>Forgot Password</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
             </View>
         )
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
     footerWrapper: {
         display: 'flex',
         flex: 1,
-        flexDirection: 'row',
+        // flexDirection: 'row',
     },
     SignInTitle: {
         fontSize: 40,
@@ -137,7 +141,6 @@ const styles = StyleSheet.create({
     SignInButton: {
         marginTop:10,
         height:45,
-        width: 200,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -147,8 +150,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#e6a400",
     },
     text :{
-        color: 'black',
-        fontSize: 15,
+        color: '#e3dac9',
+        fontSize: 13,
     },
 })
 

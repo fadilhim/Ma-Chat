@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, Dimensions, PixelRatio } from 'react-native'
 
 class SplashScreen extends Component {
     performTimeConsumingTask = async() => {
@@ -23,8 +23,8 @@ class SplashScreen extends Component {
     render() {
         return (
         <View style={styles.viewStyles}>
-            <Image source={require('../../assets/MaChatLogo.png')} style={{ width: 220, height: 220}} />
-            <Text style={{color: '#d0d0d0', fontSize: 20, fontWeight: 'bold'}}>MaChat</Text>
+            <Image source={require('../../assets/MaChatLogo.png')} style={{ width: 150, height: 150, marginBottom: 10}} />
+            <Text style={{color: '#d0d0d0', fontSize: 25, fontWeight: 'bold'}}>MaChat</Text>
         </View>
         );
     }

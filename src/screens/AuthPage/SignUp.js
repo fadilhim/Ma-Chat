@@ -90,7 +90,7 @@ class SignUpScreen extends Component{
                             onChangeText={text => this.handleChange( 'fullname', text )}
                         />
                         <TextInput 
-                            placeholder='ID'
+                            placeholder='Username'
                             underlineColorAndroid='#207561'
                             placeholderTextColor='#e3dac9'
                             style={styles.inputField}
@@ -131,16 +131,17 @@ class SignUpScreen extends Component{
                     }
                 </View>
                 <View style={styles.footerWrapper}>
-                    <View style={{marginRight: 120}}>
-                        <TouchableOpacity onPress={()=> this.props.navigation.navigate('Login')} >
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{color: 'black'}}>Already have an account? </Text>
+                        <TouchableOpacity onPress={()=> this.props.navigation.navigate('Login')} activeOpacity={0.85} >
                             <Text style={styles.text}>Login</Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    {/* <View>
                         <TouchableOpacity onPress={()=> this.props.navigation.navigate('ForgotPass')} >
                             <Text style={styles.text}>Forgot Password</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
             </View>
         )
@@ -182,7 +183,6 @@ const styles = StyleSheet.create({
         marginTop:10,
         marginRight: 20,
         height:45,
-        width: 200,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#207561",
     },
     text :{
-        color: 'black',
-        fontSize: 15,
+        color: '#e3dac9',
+        fontSize: 13,
     },
 });
 
