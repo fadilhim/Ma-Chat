@@ -1,4 +1,4 @@
-<h1 align='center'>Sweet Room</h1>
+<h1 align='center'>Ma-Chat</h1>
 
 ## Table of Contents
 
@@ -34,11 +34,13 @@ Ma-Chat App means to communicate quickly and realtime with your friend. You also
 
 ## Screenshots
 <div align="center">
-       
+       <img width="250" src="https://im5.ezgif.com/tmp/ezgif-5-90c42f007092.gif">
+       <img width="250" src="https://im5.ezgif.com/tmp/ezgif-5-891a4c8665a1.gif">
 </div>
   <br/>
 <div align="center">
-    
+       <img width="250" src="https://im5.ezgif.com/tmp/ezgif-5-d9f326626e26.gif">
+       <img width="250" src="https://im5.ezgif.com/tmp/ezgif-5-3d776b4a794f.gif">
 </div>
 
 ## Release APK
