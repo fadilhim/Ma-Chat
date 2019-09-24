@@ -8,7 +8,6 @@
 - [Usage](#usage-for-development)
 - [Screenshots](#screenshots)
 - [Release APK](#release-apk)
-- [Related Project](https://github.com/brillianodhiya/SweetRoom-Backend)
 
 ## Introduction
 Ma-Chat App means to communicate quickly and realtime with your friend. You also can find out the location of your friend.
