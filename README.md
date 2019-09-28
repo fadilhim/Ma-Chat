@@ -39,7 +39,7 @@ Ma-Chat App means to communicate quickly and realtime with your friend. You also
   <br/>
 <div align="center">
        <img width="250" src="https://user-images.githubusercontent.com/47060060/65450510-76583200-de67-11e9-940d-06719107c88b.gif">
-       <img width="250" src="https://user-images.githubusercontent.com/47060060/65812586-4906dd80-e1f3-11e9-9897-a7f65546815e.gif)">
+       <img width="250" src="https://user-images.githubusercontent.com/47060060/65812586-4906dd80-e1f3-11e9-9897-a7f65546815e.gif">
 </div>
 
 ## Release APK
