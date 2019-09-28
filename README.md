@@ -33,7 +33,7 @@ Ma-Chat App means to communicate quickly and realtime with your friend. You also
 
 ## Screenshots
 <div align="center">
-       <img width="250" src="https://im5.ezgif.com/tmp/ezgif-5-90c42f007092.gif">
+       <img width="250" src="https://user-images.githubusercontent.com/47060060/65812546-b6663e80-e1f2-11e9-950b-ddfaa37ca529.gif">
        <img width="250" src="https://im5.ezgif.com/tmp/ezgif-5-d9f326626e26.gif">
 </div>
   <br/>
