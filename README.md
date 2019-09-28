@@ -33,13 +33,13 @@ Ma-Chat App means to communicate quickly and realtime with your friend. You also
 
 ## Screenshots
 <div align="center">
+       <img width="250" src="https://user-images.githubusercontent.com/47060060/65812577-270d5b00-e1f3-11e9-9bb0-0a61b8414d4e.gif">
        <img width="250" src="https://user-images.githubusercontent.com/47060060/65812546-b6663e80-e1f2-11e9-950b-ddfaa37ca529.gif">
-       <img width="250" src="https://im5.ezgif.com/tmp/ezgif-5-d9f326626e26.gif">
 </div>
   <br/>
 <div align="center">
        <img width="250" src="https://user-images.githubusercontent.com/47060060/65450510-76583200-de67-11e9-940d-06719107c88b.gif">
-       <img width="250" src="https://im5.ezgif.com/tmp/ezgif-5-3d776b4a794f.gif">
+       <img width="250" src="https://user-images.githubusercontent.com/47060060/65812586-4906dd80-e1f3-11e9-9897-a7f65546815e.gif)">
 </div>
 
 ## Release APK
