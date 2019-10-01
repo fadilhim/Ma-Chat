@@ -7,6 +7,7 @@ import { Icon } from 'native-base'
 import { ScrollView } from 'react-native-gesture-handler'
 import ImagePicker from 'react-native-image-picker'
 import RNFetchBlob from 'rn-fetch-blob'
+import Geolocation from 'react-native-geolocation-service';
 
 class ProfileScreen extends Component {
     constructor(){
@@ -96,6 +97,7 @@ class ProfileScreen extends Component {
                 firebase.database().ref('users/' + uid).update({ status: 'offline' })
                 await AsyncStorage.clear()
                 firebase.auth().signOut()
+                Geolocation.stopObserving();
                 this.props.navigation.navigate('Login')
             })
             .catch(function(error) {

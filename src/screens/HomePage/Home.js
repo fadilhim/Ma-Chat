@@ -4,7 +4,6 @@ import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Image, Permission
 import firebase from 'firebase';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from 'react-native-geolocation-service';
-// import { Spinner } from 'native-base';
 import { ScrollView } from 'react-native-gesture-handler';
 
 class HomeScreen extends Component {
@@ -16,11 +15,11 @@ class HomeScreen extends Component {
     state = {
         users: [],
         uid: '',
-        lastmsg: [],
         receiverList: [],
+        lastmsg: {},
     }
 
-    UNSAFE_componentWillMount = async () => {
+    componentDidMount = async () => {
         await AsyncStorage.getItem('uid').then(
             (uid) => this.setState({
                 uid: uid,
@@ -54,26 +53,26 @@ class HomeScreen extends Component {
             lastmsg.on('value', (mssg) => {
                 lastmsg.on('child_added', (ress) => {
                     let lastmsgList = this.state.lastmsg;
-
-                    if(mssg.val() != null){
-                        lastmsgList.map( (item) => {
-                            
-                        })
-                        lastmsgList.push({[mssg.key]: ress.val()});
-                        console.log('listen',lastmsgList)
+                    if (mssg.val() != null){
+                        lastmsgList[mssg.key] = ress.val()
                         this.setState({
                             lastmsg: lastmsgList,
                         });
                     }
+
+                    // let newMessages = firebase.database().ref('indicators/').child(this.state.uid).child(friendList)
+                    // let indicator = 0
+                    // newMessages.child('newMessage').on("value", (value)=> {
+                    //     indicator = value.val()
+                    // })
+                    // newMessages.update({newMessage: indicator + 1})
 
                 })
                 
             });
 
         });
-    }
 
-    componentDidMount = async () => {
         let hasLocationPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
         if (!hasLocationPermission){
             hasLocationPermission = await this.requestLocationPermission();
@@ -98,9 +97,6 @@ class HomeScreen extends Component {
         }
     }
 
-    componentWillUnmount = () => {
-        Geolocation.stopObserving();
-    }
 
     requestLocationPermission = async () => {
         try {
@@ -123,29 +119,26 @@ class HomeScreen extends Component {
     }
 
     _renderRow = ({item}) => {
-        let msg = Object.values(this.state.lastmsg);
-        let listReceiver = this.state.receiverList
-        let uidReceiver = item.uid
+        let msg = this.state.lastmsg
+        let listReceiver = this.state.receiverList;
+        let uidReceiver = item.uid;
+        console.log('msg', msg)
 
         if (listReceiver.includes(uidReceiver)) {
-            let messagess = []
-            msg.map( (value) => {
-                let val = Object.values(value)
-                val.uid = Object.keys(value)[0]
-
-                if (val.uid == uidReceiver) {
-                    messagess.push(val[0])
-                }
-            })
-            console.log('index', messagess)
-            if (messagess[0] != undefined){
+            let messagess = msg[uidReceiver]
+            console.log('messagess', messagess)
+            if (messagess !== undefined){
                 return (
-                    <TouchableOpacity style={{ padding: 10, flexDirection: 'row' }} onPress={ () => this.props.navigation.navigate('Chat', {item: item}) }>
+                    <TouchableOpacity style={{ padding: 10, flexDirection: 'row' }}
+                        onPress={ () => {
+                            this.props.navigation.navigate('Chat', {item: item})
+                            // firebase.database().ref('messages/').child(this.state.uid).child(uidReceiver).update({newMessage: 0})
+                        }}>
                         <Image source={{uri: item.photo}} style={{height: 50, width: 50, borderRadius: 50}} />
                         <View style={{paddingLeft: 10 }}>
                             <Text style={{ fontSize: 15, color: 'white' }}>{item.fullname}</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={styles.friendLastMsg}>{messagess[0].text}</Text>
+                                <Text style={styles.friendLastMsg}>{messagess.text}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -155,20 +148,20 @@ class HomeScreen extends Component {
     }
 
     render() {
-        // console.log('lastmsg', this.state.lastmsg)
         return (
             <SafeAreaView style={{backgroundColor: '#353839', flex: 1}}>
                 <View style={{height: 52, backgroundColor: '#353839', justifyContent: 'center'}}>
                     <Text style={{color: 'white', fontSize: 20, fontFamily: 'Roboto', marginLeft: 10}}>Chats</Text>
                 </View>
                 {this.state.users.length > 0 ?
-                    this.state.lastmsg.length > 0 ?
+                    this.state.lastmsg != null ?
                     <ScrollView>
                         <FlatList
                             key={this.state.receiverList.length}
                             data={this.state.users}
-                            renderItem={this._renderRow}
+                            renderItem={ item => this._renderRow(item)}
                             keyExtractor={ (item) => item.username }
+                            extraData={this.state}
                         />
                     </ScrollView>
                     :
