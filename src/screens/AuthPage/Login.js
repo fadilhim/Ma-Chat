@@ -1,7 +1,7 @@
 /* eslint-disable handle-callback-err */
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { View, Text,TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native'
+import { View, Text,TouchableOpacity, StyleSheet, TextInput, ActivityIndicator } from 'react-native'
 import { Button, Toast } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
 import firebase from 'firebase'
@@ -35,6 +35,7 @@ class LoginScreen extends Component{
                 AsyncStorage.setItem('uid', result.user.uid)
                 AsyncStorage.setItem('name', result.user.displayName)
                 AsyncStorage.setItem('image', result.user.image)
+                this.setState({isLoading: false})
                 this.props.navigation.navigate('Tabs')
             })
             .catch(error => {
@@ -85,7 +86,11 @@ class LoginScreen extends Component{
                     </View>
                     <View style={{alignItems: 'center'}}>
                         <Button style={styles.SignInButton} dark title='Login' onPress={() => this.handleSubmit()} >
+                        {this.state.isLoading?
+                            <ActivityIndicator color='white' />
+                        :
                             <Text style={{color:'white'}}>Login</Text>
+                        }
                         </Button>
                     </View>
                     
@@ -97,11 +102,6 @@ class LoginScreen extends Component{
                             <Text style={styles.text}>Sign Up</Text>
                         </TouchableOpacity>
                     </View>
-                    {/* <View >
-                        <TouchableOpacity onPress={() => {}} >
-                            <Text style={styles.text}>Forgot Password</Text>
-                        </TouchableOpacity>
-                    </View> */}
                 </View>
             </View>
         )

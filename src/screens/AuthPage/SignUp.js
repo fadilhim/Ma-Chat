@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
-import { View, Text,TouchableOpacity, StyleSheet, TextInput } from 'react-native'
+import { View, Text,TouchableOpacity, StyleSheet, TextInput, ActivityIndicator } from 'react-native'
 import { Button, Toast } from 'native-base'
 import firebase from 'firebase'
 
@@ -16,6 +16,7 @@ class SignUpScreen extends Component{
             emailInUseError: false,
             emailInputError: false,
             passwordInputError: false,
+            isLoading: false,
         }
     }
 
@@ -23,7 +24,10 @@ class SignUpScreen extends Component{
         let newFormData = {...this.state.SignUpForm}
         newFormData[name] = value
         this.setState({
-            SignUpForm: newFormData
+            SignUpForm: newFormData,
+            emailInUseError: false,
+            emailInputError: false,
+            passwordInputError: false,
         })
     }
 
@@ -39,14 +43,17 @@ class SignUpScreen extends Component{
     }
 
     handleSubmit = async() => {
+        this.setState({isLoading: true})
         if ( !this.emailRegex(this.state.SignUpForm.email) ) {
             this.setState({
-                emailInputError: true
+                emailInputError: true,
+                isLoading: false
             })
         }
         if ( !this.passwordRegex(this.state.SignUpForm.password) ) {
             this.setState({
-                passwordInputError: true
+                passwordInputError: true,
+                isLoading: false
             })
         } else {
             const data = this.state.SignUpForm
@@ -56,6 +63,7 @@ class SignUpScreen extends Component{
                 userPro.updateProfile({ displayName: data.fullname, photoURL: data.photo })
                 await firebase.database().ref('users/' + result.user.uid).set(data)
                     .then( () => {
+                        this.setState({isLoading: false})
                         Toast.show({
                             text: 'Register Succes!',
                             buttonText: 'Okay'
@@ -66,6 +74,7 @@ class SignUpScreen extends Component{
             .catch(error => {
                 // console.warn(error)
                 // this.setState({ errorMessage: JSON.stringify(error) })
+                this.setState({isLoading: false})
                 if(error.code == 'auth/email-already-in-use'){
                     this.setState({ emailInUseError: true })
                 }
@@ -121,13 +130,17 @@ class SignUpScreen extends Component{
                     </View>
                     <View style={{alignItems: 'flex-end'}}>
                         <Button style={styles.SignUpButton} dark title='SignUp' onPress={() => this.handleSubmit()} >
+                        {this.state.isLoading?
+                            <ActivityIndicator color='white'     />
+                        :
                             <Text style={{color:'white'}}>Sign Up</Text>
+                        }
                         </Button>
                     </View>
                 </View>
                 <View>
-                    {
-                        this.state.emailInUseError ? <Text>Email is already registered! Try to login.</Text> : <Text></Text>
+                    {this.state.emailInUseError ?
+                        <Text>Email is already registered! Try to login.</Text> : <Text></Text>
                     }
                 </View>
                 <View style={styles.footerWrapper}>
@@ -137,11 +150,6 @@ class SignUpScreen extends Component{
                             <Text style={styles.text}>Login</Text>
                         </TouchableOpacity>
                     </View>
-                    {/* <View>
-                        <TouchableOpacity onPress={()=> this.props.navigation.navigate('ForgotPass')} >
-                            <Text style={styles.text}>Forgot Password</Text>
-                        </TouchableOpacity>
-                    </View> */}
                 </View>
             </View>
         )
